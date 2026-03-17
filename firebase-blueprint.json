@@ -1,0 +1,148 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the application",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique identifier for the user"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's display name"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "The user's profile picture URL"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["student", "tutor", "admin"],
+          "description": "The user's role"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time the user was created"
+        }
+      },
+      "required": ["uid", "email", "role", "createdAt"]
+    },
+    "TutorApplication": {
+      "title": "TutorApplication",
+      "description": "An application to become a tutor",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The user ID of the applicant"
+        },
+        "fullName": {
+          "type": "string",
+          "description": "The full name of the applicant"
+        },
+        "phone": {
+          "type": "string",
+          "description": "The phone number of the applicant"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the applicant"
+        },
+        "cvFileName": {
+          "type": "string",
+          "description": "The name of the uploaded CV file"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "approved", "rejected"],
+          "description": "The status of the application"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time the application was submitted"
+        }
+      },
+      "required": ["userId", "fullName", "phone", "email", "status", "createdAt"]
+    },
+    "ClassRequest": {
+      "title": "ClassRequest",
+      "description": "A request from a student/parent to find a tutor",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The user ID of the student/parent"
+        },
+        "subject": {
+          "type": "string",
+          "description": "The subject needed"
+        },
+        "grade": {
+          "type": "string",
+          "description": "The grade level"
+        },
+        "learningMode": {
+          "type": "string",
+          "description": "The preferred learning mode (e.g., in-person, online)"
+        },
+        "ward": {
+          "type": "string",
+          "description": "The ward/district for in-person learning"
+        },
+        "sessionsPerWeek": {
+          "type": "string",
+          "description": "Number of sessions per week"
+        },
+        "expectedFee": {
+          "type": "string",
+          "description": "Expected fee per session"
+        },
+        "additionalRequirements": {
+          "type": "string",
+          "description": "Any additional requirements for the tutor"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "matched", "completed", "cancelled"],
+          "description": "The status of the request"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time the request was submitted"
+        }
+      },
+      "required": ["userId", "subject", "grade", "learningMode", "sessionsPerWeek", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "The users collection"
+    },
+    "/tutor_applications/{applicationId}": {
+      "schema": {
+        "$ref": "#/entities/TutorApplication"
+      },
+      "description": "The tutor applications collection"
+    },
+    "/class_requests/{requestId}": {
+      "schema": {
+        "$ref": "#/entities/ClassRequest"
+      },
+      "description": "The class requests collection"
+    }
+  }
+}

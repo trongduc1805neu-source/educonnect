@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EduConnect</title>
+    <script>
+      // Workaround for "Cannot set property fetch of #<Window> which has only a getter"
+      // This happens when some polyfills (like formdata-polyfill) try to overwrite window.fetch
+      const originalFetch = window.fetch;
+      Object.defineProperty(window, 'fetch', {
+        get: function() { return originalFetch; },
+        set: function() { /* ignore assignment */ },
+        configurable: true
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

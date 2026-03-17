@@ -9,24 +9,24 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-bold ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-sm text-sm font-bold uppercase tracking-wider ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-primary-500 text-slate-900 hover:bg-primary-600 shadow-sm hover:shadow-md",
+        default: "bg-emerald-700 text-white hover:bg-emerald-800 shadow-sm hover:shadow-md",
         destructive:
-          "bg-red-500 text-white hover:bg-red-600",
+          "bg-red-600 text-white hover:bg-red-700",
         outline:
-          "border-2 border-primary-600 bg-transparent text-primary-700 hover:bg-primary-50",
+          "border border-emerald-700 bg-transparent text-emerald-700 hover:bg-emerald-50",
         secondary:
           "bg-slate-100 text-slate-900 hover:bg-slate-200",
-        ghost: "hover:bg-slate-100 hover:text-slate-900",
-        link: "text-primary-700 underline-offset-4 hover:underline",
+        ghost: "hover:bg-emerald-50 hover:text-emerald-800",
+        link: "text-emerald-700 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-11 px-6 py-2",
-        sm: "h-9 rounded-lg px-4",
-        lg: "h-14 rounded-2xl px-8 text-base",
+        sm: "h-9 rounded-sm px-4 text-xs",
+        lg: "h-14 rounded-sm px-8 text-base",
         icon: "h-11 w-11",
       },
     },
