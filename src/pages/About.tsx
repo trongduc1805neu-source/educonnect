@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
 const TEAM = [
-  { id: 1, name: 'Nguyễn Trọng Đức', role: 'Giám đốc Tài chính', image: 'https://ibb.co/HpBTXssL', link: '#' },
-  { id: 2, name: 'Lê Nguyễn Thu Uyên', role: 'Giám đốc Sản phẩm', image: 'https://ibb.co/DDs8j5y6', link: '#' },
-  { id: 3, name: 'Nguyễn Ngọc Huyền', role: 'Giám đốc Điều hành', image: 'https://ibb.co/60DH8hxm', link: '#' },
-  { id: 4, name: 'Phan Thúy An', role: 'Giám đốc Marketing', image: 'https://ibb.co/Zpy5CX3C', link: '#' },
-  { id: 5, name: 'Nguyễn Ngân Hà', role: 'Giám đốc pháp lý', image: 'https://ibb.co/5J8yzNB', link: '#' },
+  { id: 1, name: 'Nguyễn Trọng Đức', role: 'Giám đốc Tài chính', image: 'https://i.ibb.co/yBdFV11m/640916437-911882391531515-7975089330566269434-n.jpg', link: '#' },
+  { id: 2, name: 'Lê Nguyễn Thu Uyên', role: 'Giám đốc Sản phẩm', image: 'https://i.ibb.co/PZ39Vwnb/649080250-1480301896998131-8534730828073620253-n.jpg', link: '#' },
+  { id: 3, name: 'Nguyễn Ngọc Huyền', role: 'Giám đốc Điều hành', image: 'https://i.ibb.co/yc10CNFB/497460350-673185018759808-279241304453040058-n.jpg', link: '#' },
+  { id: 4, name: 'Phan Thúy An', role: 'Giám đốc Marketing', image: 'https://i.ibb.co/DDVvpQy7/image.png', link: '#' },
+  { id: 5, name: 'Nguyễn Ngân Hà', role: 'Giám đốc pháp lý', image: 'https://i.ibb.co/4wDwsSC7/image.png', link: '#' },
 ];
 
 export function About() {
