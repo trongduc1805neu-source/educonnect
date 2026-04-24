@@ -1,208 +1,256 @@
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
+import { Wallet, CalendarClock, BookOpen, Clock, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export function StudentDashboard() {
   return (
-    <div className="max-w-6xl mx-auto space-y-8 pb-16 px-4">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-8 mb-8">
+    <div className="max-w-7xl mx-auto space-y-12 pb-24 px-6">
+      
+      {/* Header - Góc Học Tập */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mt-12 mb-12 border-b border-primary-200 pb-8">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 uppercase tracking-tight relative inline-block mb-2">
-            Bảng điều khiển Phụ huynh / Học sinh
-            <motion.span
-              initial={{ width: 0 }}
-              animate={{ width: '100%' }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-              className="absolute -bottom-2 left-0 h-1.5 bg-emerald-700 rounded-full"
-            />
+          <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-500 mb-4">
+            <span className="w-6 h-px bg-accent-500"></span> Không gian cá nhân
+          </div>
+          <h1 className="text-4xl lg:text-5xl font-heading text-ink mb-2">
+            Góc học tập <span className="italic text-primary-700 font-light">của con.</span>
           </h1>
-          <p className="text-lg text-slate-600 mt-2 font-medium">Quản lý học tập, thanh toán và theo dõi tiến độ của con.</p>
+          <p className="text-lg text-ink/60 font-light mt-4 max-w-xl leading-relaxed">
+            Theo dõi hành trình trưởng thành, quản lý lịch trình và kết nối sâu sắc hơn với người dẫn đường.
+          </p>
         </div>
-        <Button variant="outline" className="shrink-0 rounded-sm uppercase font-bold tracking-wider border-emerald-700 text-emerald-700 hover:bg-emerald-50">
-          Thông báo (3)
+        <Button variant="outline" className="shrink-0 text-xs tracking-widest shadow-none hover:bg-primary-50">
+          TIN NHẮN MỚI (3)
         </Button>
       </div>
 
-      {/* Top Stats */}
+      {/* Top Stats - Chỉ số tổng quan thiết kế dạng thẻ tối giản */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Wallet / Escrow */}
-        <motion.div whileHover={{ y: -2 }} className="rounded-sm bg-emerald-800 p-6 shadow-sm text-white">
-          <div className="flex items-center justify-between mb-4 border-b border-emerald-700 pb-2">
-            <span className="text-sm font-bold text-emerald-100 uppercase tracking-wider">Ví Ký Quỹ (Escrow)</span>
+        {/* Quỹ học tập (Wallet) */}
+        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-primary-900 p-8 shadow-xl text-paper relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary-700 rounded-full blur-2xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-6 opacity-80">
+              <Wallet className="w-5 h-5 text-accent-500" />
+              <span className="text-[10px] font-bold uppercase tracking-widest">Quỹ Học Tập</span>
+            </div>
+            <div className="text-3xl font-heading mb-2">1.500.000đ</div>
+            <div className="text-[11px] text-paper/60 font-light tracking-wide uppercase">
+              Đã nạp 2.000.000đ tháng này
+            </div>
+            <Button variant="secondary" className="w-full mt-8 text-[11px] tracking-widest h-10 bg-white/10 border-none text-white hover:bg-white hover:text-primary-900 transition-colors">
+              NẠP THÊM
+            </Button>
           </div>
-          <div className="text-3xl font-bold mb-2">1.500.000đ</div>
-          <div className="text-sm text-emerald-200 font-medium">
-            Đã nạp 2.000.000đ tháng này
+        </motion.div>
+
+        {/* Lịch học sắp tới */}
+        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-white p-8 border border-primary-100 paper-shadow">
+          <div className="flex items-center gap-3 mb-6 text-ink/50">
+            <CalendarClock className="w-5 h-5 text-primary-700" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Lịch Trình</span>
           </div>
-          <Button variant="secondary" size="sm" className="w-full mt-6 rounded-sm uppercase font-bold tracking-wider bg-white text-emerald-800 hover:bg-emerald-50">
-            Nạp thêm tiền
+          <div className="text-3xl font-heading text-ink mb-2">3 buổi</div>
+          <div className="text-[12px] text-ink/60 font-light">
+            Gần nhất: <span className="text-primary-700 font-semibold">18:00 hôm nay</span>
+          </div>
+          <Button variant="outline" className="w-full mt-8 text-[11px] tracking-widest h-10 border-primary-100 hover:border-primary-300">
+            XEM LỊCH
           </Button>
         </motion.div>
 
-        {/* Upcoming Lessons */}
-        <motion.div whileHover={{ y: -2 }} className="rounded-sm bg-white p-6 shadow-sm border border-slate-200">
-          <div className="flex items-center justify-between mb-4 border-b border-slate-200 pb-2">
-            <span className="text-sm font-bold text-slate-700 uppercase tracking-wider">Lịch học sắp tới</span>
+        {/* Sổ liên lạc mới */}
+        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-white p-8 border border-primary-100 paper-shadow">
+          <div className="flex items-center gap-3 mb-6 text-ink/50">
+            <BookOpen className="w-5 h-5 text-primary-700" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Nhật Ký</span>
           </div>
-          <div className="text-3xl font-bold text-slate-900 mb-2">3 buổi</div>
-          <div className="text-sm text-slate-600 font-medium">
-            Buổi tiếp theo: <span className="text-emerald-700 font-bold">18:00 hôm nay</span>
+          <div className="text-3xl font-heading text-ink mb-2">2 báo cáo</div>
+          <div className="text-[12px] text-ink/60 font-light">
+            Cập nhật <span className="text-primary-700 font-semibold">2 giờ trước</span>
           </div>
-          <Button variant="outline" size="sm" className="w-full mt-6 rounded-sm uppercase font-bold tracking-wider border-emerald-700 text-emerald-700 hover:bg-emerald-50">
-            Xem lịch chi tiết
+          <Button variant="outline" className="w-full mt-8 text-[11px] tracking-widest h-10 border-primary-100 hover:border-primary-300">
+            ĐỌC NHẬN XÉT
           </Button>
         </motion.div>
 
-        {/* Contact Book Reports */}
-        <motion.div whileHover={{ y: -2 }} className="rounded-sm bg-white p-6 shadow-sm border border-slate-200">
-          <div className="flex items-center justify-between mb-4 border-b border-slate-200 pb-2">
-            <span className="text-sm font-bold text-slate-700 uppercase tracking-wider">Sổ liên lạc mới</span>
+        {/* Tổng giờ học */}
+        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-white p-8 border border-primary-100 paper-shadow">
+          <div className="flex items-center gap-3 mb-6 text-ink/50">
+            <Clock className="w-5 h-5 text-primary-700" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Tích Lũy</span>
           </div>
-          <div className="text-3xl font-bold text-slate-900 mb-2">2 báo cáo</div>
-          <div className="text-sm text-slate-600 font-medium">
-            Cập nhật <span className="text-emerald-700 font-bold">2 giờ trước</span>
+          <div className="text-3xl font-heading text-ink mb-2">24 giờ</div>
+          <div className="text-[12px] text-ink/60 font-light">
+            Tăng <span className="text-primary-700 font-semibold">15%</span> so với tháng trước
           </div>
-          <Button variant="outline" size="sm" className="w-full mt-6 rounded-sm uppercase font-bold tracking-wider border-emerald-700 text-emerald-700 hover:bg-emerald-50">
-            Đọc nhận xét
-          </Button>
-        </motion.div>
-
-        {/* Hours Learned */}
-        <motion.div whileHover={{ y: -2 }} className="rounded-sm bg-white p-6 shadow-sm border border-slate-200">
-          <div className="flex items-center justify-between mb-4 border-b border-slate-200 pb-2">
-            <span className="text-sm font-bold text-slate-700 uppercase tracking-wider">Tổng giờ học</span>
-          </div>
-          <div className="text-3xl font-bold text-slate-900 mb-2">24 giờ</div>
-          <div className="text-sm text-slate-600 font-medium">
-            Tăng <span className="text-emerald-700 font-bold">15%</span> so với tháng trước
-          </div>
-          <Button variant="outline" size="sm" className="w-full mt-6 rounded-sm uppercase font-bold tracking-wider border-emerald-700 text-emerald-700 hover:bg-emerald-50">
-            Xem thống kê
+          <Button variant="outline" className="w-full mt-8 text-[11px] tracking-widest h-10 border-primary-100 hover:border-primary-300">
+            XEM THỐNG KÊ
           </Button>
         </motion.div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Main Content: Contact Book & Insights */}
-        <div className="lg:col-span-2 space-y-8">
-          {/* Sổ Liên Lạc Điện Tử 2.0 */}
-          <div className="rounded-sm bg-white p-8 shadow-sm border border-slate-200">
-            <div className="flex items-center justify-between mb-6 border-b-2 border-emerald-800 pb-2">
-              <h2 className="text-xl font-bold text-slate-900 uppercase tracking-wider">
-                Sổ Liên Lạc Điện Tử 2.0
+      <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+        
+        {/* Cột trái: Sổ liên lạc & AI Insights */}
+        <div className="lg:col-span-8 space-y-12">
+          
+          <div className="bg-white rounded-3xl p-8 lg:p-12 border border-primary-100 paper-shadow relative overflow-hidden">
+            {/* Header của phần Nhật ký */}
+            <div className="flex items-center justify-between mb-10 pb-6 border-b border-primary-100">
+              <h2 className="text-3xl font-heading text-ink">
+                Nhật ký <span className="italic text-primary-700 font-light">đồng hành.</span>
               </h2>
-              <Button variant="ghost" size="sm" className="text-emerald-700 font-bold uppercase tracking-wider hover:bg-emerald-50 rounded-sm">Xem tất cả</Button>
+              <Button variant="link" className="text-[11px] tracking-widest h-auto p-0">Xem tất cả</Button>
             </div>
 
-            <div className="space-y-6">
-              {/* Report Item */}
-              <div className="border-b border-slate-200 pb-6 last:border-0 last:pb-0">
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-4 gap-2">
+            <div className="space-y-12">
+              {/* Report Item - Thiết kế như một bức thư */}
+              <div className="relative">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-6 gap-4">
                   <div>
-                    <h3 className="font-bold text-slate-900 text-lg uppercase tracking-wide">Môn Toán - Lớp 9</h3>
-                    <p className="text-sm text-slate-600 font-medium mt-1">Gia sư: <span className="text-emerald-700 font-bold">Nguyễn Văn A</span></p>
-                    <p className="text-sm text-slate-500 mt-1">Ngày học: 15/10/2023 - 18:00 đến 20:00</p>
+                    <h3 className="font-heading text-2xl text-ink mb-2">Toán Học - Khối 9</h3>
+                    <p className="text-[13px] text-ink/60 font-light">
+                      Người hướng dẫn: <span className="text-primary-700 font-medium">Nguyễn Hải Anh</span>
+                    </p>
+                    <p className="text-[12px] text-ink/40 uppercase tracking-widest mt-1">15/10/2023 • 18:00 - 20:00</p>
                   </div>
-                  <span className="inline-flex items-center rounded-sm bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800 border border-emerald-200 uppercase tracking-wider h-fit">
-                    Đã xác nhận
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold text-primary-700 bg-primary-50 rounded uppercase tracking-widest h-fit">
+                    <CheckCircle2 className="w-3 h-3" /> Đã xác nhận
                   </span>
                 </div>
                 
-                <div className="bg-slate-50 rounded-sm p-6 space-y-4 border border-slate-200">
-                  <div className="grid grid-cols-2 gap-6 border-b border-slate-200 pb-4">
-                    <div className="space-y-2">
-                      <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Chuyên cần</span>
-                      <div className="text-sm font-bold text-slate-900">
-                        Đúng giờ <span className="text-emerald-700">(5/5)</span>
+                <div className="pl-6 border-l-[1.5px] border-primary-200 space-y-8">
+                  {/* Điểm đánh giá (Rubric) */}
+                  <div className="grid grid-cols-2 gap-8 max-w-md">
+                    <div>
+                      <span className="text-[10px] text-ink/40 font-bold uppercase tracking-[0.2em] block mb-2">Sự chuyên cần</span>
+                      <div className="text-sm font-medium text-ink flex items-center gap-2">
+                        Đúng giờ <span className="text-accent-500 font-serif italic text-lg ml-1">5/5</span>
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Tiếp thu</span>
-                      <div className="text-sm font-bold text-slate-900">
-                        Khá tốt <span className="text-emerald-700">(4/5)</span>
+                    <div>
+                      <span className="text-[10px] text-ink/40 font-bold uppercase tracking-[0.2em] block mb-2">Mức độ tiếp thu</span>
+                      <div className="text-sm font-medium text-ink flex items-center gap-2">
+                        Khá tốt <span className="text-accent-500 font-serif italic text-lg ml-1">4/5</span>
                       </div>
                     </div>
                   </div>
-                  <div className="pt-2">
-                    <span className="text-xs text-slate-500 font-bold uppercase tracking-wider block mb-2">Nhận xét của gia sư</span>
-                    <p className="text-sm text-slate-700 leading-relaxed text-justify">Cháu làm bài tập về nhà đầy đủ. Hôm nay học phần Hình học không gian, cháu nắm bắt nhanh nhưng phần tính thể tích còn hơi chậm. Đã giao thêm 3 bài tập tương tự để luyện tập.</p>
+
+                  {/* Lời nhận xét */}
+                  <div>
+                    <span className="text-[10px] text-ink/40 font-bold uppercase tracking-[0.2em] block mb-3">Lời nhắn từ người dạy</span>
+                    <p className="text-[15px] text-ink/80 font-light leading-relaxed italic bg-primary-50/50 p-5 rounded-r-xl border border-l-0 border-primary-50">
+                      "Cháu làm bài tập về nhà đầy đủ. Hôm nay học phần Hình học không gian, cháu nắm bắt ý tưởng nền tảng rất nhanh nhưng việc áp dụng công thức tính thể tích còn đôi chút ngập ngừng. Cô đã gửi thêm 3 bài tập nhỏ để cháu tự tin hơn trước buổi học tới."
+                    </p>
                   </div>
                 </div>
 
-                {/* AI Insights (Phase 2 feature) */}
-                <div className="mt-6 rounded-sm bg-emerald-50 p-6 border border-emerald-200">
-                  <div className="text-sm font-bold text-emerald-900 mb-3 uppercase tracking-wider border-b border-emerald-200 pb-2">
-                    AI Lesson Insights (Phân tích tự động)
+                {/* AI Insights - Góc nhìn thấu cảm */}
+                <div className="mt-8 ml-6 rounded-2xl bg-paper p-6 border border-primary-100 shadow-sm relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-accent-500/5 rounded-full blur-2xl"></div>
+                  <div className="flex items-center gap-2 text-[10px] font-bold text-accent-500 mb-4 uppercase tracking-[0.2em]">
+                    <Sparkles className="w-4 h-4" /> Góc nhìn thấu cảm (AI)
                   </div>
-                  <ul className="space-y-2 text-sm text-emerald-800 list-disc list-inside font-medium">
-                    <li>Thời gian học sinh tương tác: <span className="font-bold">45% (Tốt)</span></li>
-                    <li>Lỗi sai phổ biến: <span className="font-bold">Nhầm lẫn dấu hiệu nhận biết hình thang cân.</span></li>
-                    <li>Đã tự động tạo <span className="font-bold">5 flashcard</span> ôn tập từ vựng/công thức mới.</li>
+                  <ul className="space-y-3 text-[13px] text-ink/70 font-light relative z-10">
+                    <li className="flex items-start gap-3">
+                      <span className="text-primary-500 mt-0.5 font-serif text-lg leading-none">✦</span>
+                      <span>Mức độ tương tác chủ động: <strong className="font-medium text-ink">45% (Tích cực)</strong>. Học sinh đặt câu hỏi phản biện nhiều hơn 10% so với trung bình tuần trước.</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-primary-500 mt-0.5 font-serif text-lg leading-none">✦</span>
+                      <span>Khoảng trống kiến thức phát hiện: <strong className="font-medium text-ink">Dấu hiệu nhận biết hình thang cân</strong>. Đã tự động bổ sung vào lộ trình ôn tập cuối tháng.</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-primary-500 mt-0.5 font-serif text-lg leading-none">✦</span>
+                      <span>Hệ thống đã chuẩn bị sẵn <strong className="font-medium text-ink">5 thẻ ghi nhớ (Flashcard)</strong> từ vựng mới để con ôn tập trên ứng dụng.</span>
+                    </li>
                   </ul>
                 </div>
               </div>
+              
+              {/* Đường cắt ngang giữa các báo cáo */}
+              <div className="magazine-divider opacity-50"></div>
             </div>
           </div>
         </div>
 
-        {/* Sidebar: Payment & Upcoming */}
-        <div className="space-y-8">
-          {/* Escrow Payment Status */}
-          <div className="rounded-sm bg-white p-6 shadow-sm border border-slate-200">
-            <div className="border-b-2 border-emerald-800 pb-2 mb-6">
-              <h2 className="text-lg font-bold text-slate-900 uppercase tracking-wider">
-                Thanh toán chờ xử lý
+        {/* Cột phải: Thanh toán & Lịch trình */}
+        <div className="lg:col-span-4 space-y-10">
+          
+          {/* Thanh toán chờ xử lý (Escrow Pending) */}
+          <div className="bg-white rounded-3xl p-8 border border-primary-100 paper-shadow">
+            <div className="mb-6 pb-4 border-b border-primary-100">
+              <h2 className="text-sm font-bold text-ink/50 uppercase tracking-[0.2em] flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-accent-500" /> Xác nhận giải ngân
               </h2>
             </div>
+            
             <div className="space-y-4">
-              <div className="bg-slate-50 rounded-sm p-5 border border-slate-200">
-                <div className="flex justify-between items-start mb-3">
+              <div className="group">
+                <div className="flex justify-between items-start mb-2">
                   <div>
-                    <div className="font-bold text-slate-900 uppercase tracking-wide">Toán Lớp 9</div>
-                    <div className="text-xs text-slate-500 font-medium mt-1">15/10/2023 (2 giờ)</div>
+                    <div className="font-heading text-lg text-ink">Toán Lớp 9</div>
+                    <div className="text-[11px] text-ink/40 uppercase tracking-widest mt-1">15/10/2023 (2 giờ)</div>
                   </div>
-                  <div className="font-bold text-emerald-700 text-lg">400.000đ</div>
+                  <div className="font-heading text-primary-700 text-xl">400.000đ</div>
                 </div>
-                <p className="text-xs text-slate-600 mb-4 font-medium leading-relaxed">Đang chờ phụ huynh xác nhận buổi học để giải ngân cho gia sư.</p>
+                <p className="text-[12px] text-ink/60 font-light mb-5 leading-relaxed">
+                  Quỹ học tập đang giữ khoản tiền này. Vui lòng xác nhận chất lượng buổi học để hệ thống gửi thù lao cho người dạy.
+                </p>
                 <div className="flex gap-3">
-                  <Button size="sm" className="w-full text-xs rounded-sm uppercase font-bold tracking-wider bg-emerald-700 hover:bg-emerald-800 text-white">Xác nhận & Trả tiền</Button>
-                  <Button size="sm" variant="outline" className="w-full text-xs rounded-sm uppercase font-bold tracking-wider text-red-700 border-red-300 hover:bg-red-50">Khiếu nại</Button>
+                  <Button size="sm" className="w-full text-[10px] h-10 tracking-widest px-0">XÁC NHẬN</Button>
+                  <Button size="sm" variant="outline" className="w-full text-[10px] h-10 tracking-widest px-0 border-primary-200 text-ink/60 hover:text-accent-500 hover:border-accent-200">KHIẾU NẠI</Button>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Upcoming Schedule */}
-          <div className="rounded-sm bg-white p-6 shadow-sm border border-slate-200">
-            <div className="border-b-2 border-emerald-800 pb-2 mb-6">
-              <h2 className="text-lg font-bold text-slate-900 uppercase tracking-wider">
-                Lịch học tuần này
+          {/* Lịch học sắp tới */}
+          <div className="bg-white rounded-3xl p-8 border border-primary-100 paper-shadow">
+            <div className="mb-8 pb-4 border-b border-primary-100">
+              <h2 className="text-sm font-bold text-ink/50 uppercase tracking-[0.2em]">
+                Lịch trình sắp tới
               </h2>
             </div>
-            <div className="space-y-6">
-              <div className="flex items-start gap-4 border-b border-slate-100 pb-4">
-                <div className="rounded-sm bg-emerald-50 p-3 text-center min-w-[60px] border border-emerald-200">
-                  <div className="text-xs font-bold text-emerald-800 uppercase tracking-wider">Thứ 3</div>
-                  <div className="text-xl font-bold text-emerald-900 mt-1">17</div>
+            
+            <div className="space-y-8">
+              {/* Ngày 1 */}
+              <div className="flex items-start gap-5">
+                <div className="flex flex-col items-center justify-center w-14 h-16 rounded-xl bg-primary-50 border border-primary-100 shrink-0 text-primary-900">
+                  <div className="text-[10px] font-bold uppercase tracking-widest opacity-60">Thứ 3</div>
+                  <div className="text-2xl font-heading leading-none mt-1">17</div>
                 </div>
-                <div>
-                  <div className="font-bold text-slate-900 uppercase tracking-wide">Tiếng Anh Giao Tiếp</div>
-                  <div className="text-sm text-emerald-700 font-bold mt-1">18:00 - 19:30</div>
-                  <div className="text-xs text-slate-600 font-medium mt-1">Gia sư: <span className="font-bold">Trần Thị B</span></div>
+                <div className="pt-1">
+                  <div className="font-heading text-lg text-ink leading-tight mb-1">Tiếng Anh Giao Tiếp</div>
+                  <div className="text-[12px] text-primary-700 font-semibold mb-1">18:00 - 19:30</div>
+                  <div className="text-[12px] text-ink/50 font-light">
+                    Đồng hành cùng: <span className="font-medium text-ink">Cô Phương Ly</span>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
-                <div className="rounded-sm bg-slate-50 p-3 text-center min-w-[60px] border border-slate-200">
-                  <div className="text-xs font-bold text-slate-600 uppercase tracking-wider">Thứ 5</div>
-                  <div className="text-xl font-bold text-slate-800 mt-1">19</div>
+
+              {/* Ngày 2 */}
+              <div className="flex items-start gap-5">
+                <div className="flex flex-col items-center justify-center w-14 h-16 rounded-xl bg-paper border border-primary-100 shrink-0 text-ink/60">
+                  <div className="text-[10px] font-bold uppercase tracking-widest opacity-60">Thứ 5</div>
+                  <div className="text-2xl font-heading leading-none mt-1">19</div>
                 </div>
-                <div>
-                  <div className="font-bold text-slate-900 uppercase tracking-wide">Toán Lớp 9</div>
-                  <div className="text-sm text-slate-600 font-bold mt-1">19:00 - 21:00</div>
-                  <div className="text-xs text-slate-500 font-medium mt-1">Gia sư: <span className="font-bold">Nguyễn Văn A</span></div>
+                <div className="pt-1">
+                  <div className="font-heading text-lg text-ink leading-tight mb-1">Toán Học Khối 9</div>
+                  <div className="text-[12px] text-ink/70 font-semibold mb-1">19:00 - 21:00</div>
+                  <div className="text-[12px] text-ink/50 font-light">
+                    Đồng hành cùng: <span className="font-medium text-ink">Thầy Hải Anh</span>
+                  </div>
                 </div>
               </div>
             </div>
+            
+            <Button variant="link" className="w-full mt-6 text-[11px] tracking-widest justify-center">
+              MỞ TOÀN BỘ LỊCH CHÌNH
+            </Button>
           </div>
+
         </div>
       </div>
     </div>

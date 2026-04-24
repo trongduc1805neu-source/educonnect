@@ -1,44 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+/* EduConnect - Editorial Design System
+  Style: Warm, High-end Educational Magazine
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300..700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Mulish", ui-sans-serif, system-ui, sans-serif;
+  /* Typography: Serif cho tiêu đề tạo cảm giác tri thức, Sans cho nội dung dễ đọc */
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Lora", ui-serif, Georgia, serif;
   
-  --color-primary-50: #ecfdf5;
-  --color-primary-100: #d1fae5;
-  --color-primary-200: #a7f3d0;
-  --color-primary-300: #6ee7b7;
-  --color-primary-400: #34d399;
-  --color-primary-500: #10b981;
-  --color-primary-600: #059669;
-  --color-primary-700: #047857;
-  --color-primary-800: #065f46;
-  --color-primary-900: #064e3b;
-  --color-primary-950: #022c22;
+  /* Bảng màu "Giấy & Mực" (Earth & Ink Palette) */
+  --color-paper: #FDFBF7;        /* Màu giấy ngà cao cấp, giảm mỏi mắt */
+  --color-ink: #1F2320;          /* Đen xanh thẫm của mực in truyền thống */
+  
+  /* Xanh ngọc bích trầm - tượng trưng cho sự điềm tĩnh và học thuật */
+  --color-primary-50: #F2F5F3;
+  --color-primary-100: #E0E7E3;
+  --color-primary-500: #4A6B56; 
+  --color-primary-700: #2C4234;
+  --color-primary-900: #18261E;
 
-  --color-accent-50: #fef2f2;
-  --color-accent-100: #fee2e2;
-  --color-accent-200: #fecaca;
-  --color-accent-300: #fca5a5;
-  --color-accent-400: #f87171;
-  --color-accent-500: #ef4444;
-  --color-accent-600: #dc2626;
-  --color-accent-700: #C41212; /* Màu bổ trợ 1 */
-  --color-accent-800: #991b1b;
-  --color-accent-900: #7f1d1d;
-  --color-accent-950: #450a0a;
-
-  --color-brand-yellow: #FFC101; /* Màu bổ trợ 2 */
-  --color-brand-gray: #B2B2B2; /* Màu bổ trợ 3 */
+  /* Cam gạch (Terracotta) - điểm nhấn ấm áp, gần gũi */
+  --color-accent-500: #C26D53;
+  
+  /* Bổ sung các biến khoảng cách đặc trưng tạp chí */
+  --spacing-section: 6rem;
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: #f8fafc; /* slate-50 */
-  color: #0f172a; /* slate-900 */
+@layer base {
+  body {
+    @apply bg-paper text-ink antialiased;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    @apply tracking-tight font-semibold;
+  }
+
+  /* Hiệu ứng gạch dưới thanh mảnh đặc trưng của các bài báo cao cấp */
+  .editorial-link {
+    @apply relative no-underline transition-all duration-300;
+    background-image: linear-gradient(var(--color-primary-500), var(--color-primary-500));
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    padding-bottom: 2px;
+  }
+
+  .editorial-link:hover {
+    @apply text-primary-700;
+    background-size: 100% 1px;
+  }
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading {
-  font-family: var(--font-heading);
+@layer components {
+  /* Tạo hiệu ứng đổ bóng mềm mại như giấy xếp chồng */
+  .paper-shadow {
+    box-shadow: 0 10px 30px -15px rgba(44, 66, 52, 0.08);
+  }
+  
+  /* Đường kẻ phân cách tinh tế giữa các chuyên mục */
+  .magazine-divider {
+    @apply w-full h-[1px] bg-primary-100 my-8;
+  }
 }

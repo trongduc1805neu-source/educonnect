@@ -4,6 +4,8 @@ import { Button } from '../components/ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import { Sparkles, UploadCloud, FileText, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function BecomeTutor() {
   const { user } = useAuth();
@@ -58,7 +60,7 @@ export function BecomeTutor() {
       return;
     }
     if (!file) {
-      setError('Vui lòng tải lên CV của bạn.');
+      setError('Vui lòng chia sẻ bản tóm tắt hành trình (CV) của bạn.');
       return;
     }
 
@@ -66,9 +68,7 @@ export function BecomeTutor() {
     setError(null);
 
     try {
-      // In a real app, we would upload the file to Firebase Storage here
-      // and get the download URL. For now, we just save the file name.
-      
+      // In a real app, upload file to Firebase Storage and get URL.
       const applicationData = {
         userId: user.uid,
         fullName: formData.fullName,
@@ -89,109 +89,146 @@ export function BecomeTutor() {
     }
   };
 
+  // MÀN HÌNH THÀNH CÔNG (Success State) - Thiết kế như một tấm thiệp tri ân
   if (isSubmitted) {
     return (
-      <div className="max-w-2xl mx-auto text-center space-y-6 py-16">
+      <div className="max-w-2xl mx-auto pb-24 pt-12 px-6">
         <motion.div 
-          initial={{ scale: 0 }} 
-          animate={{ scale: 1 }} 
-          className="w-24 h-24 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-emerald-200"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-3xl p-12 lg:p-16 border border-primary-100 paper-shadow text-center relative overflow-hidden"
         >
-          <span className="text-4xl font-bold">✓</span>
+          {/* Họa tiết trang trí góc */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+          
+          <div className="relative z-10">
+            <div className="w-20 h-20 bg-primary-50 text-primary-700 rounded-full flex items-center justify-center mx-auto mb-8">
+              <CheckCircle2 className="w-10 h-10 stroke-[1.5]" />
+            </div>
+            <h2 className="text-4xl font-heading text-ink mb-4">Lời chào mừng đã được gửi đi.</h2>
+            <p className="text-ink/60 leading-relaxed font-light text-lg max-w-md mx-auto mb-10">
+              Cảm ơn bạn đã lựa chọn trở thành một phần của EduConnect. Ban biên tập chuyên môn sẽ đọc kỹ hồ sơ và phản hồi bạn qua thư điện tử trong thời gian sớm nhất.
+            </p>
+            <Button asChild className="tracking-widest text-xs h-12 px-8">
+              <Link to="/">TRỞ VỀ TRANG CHỦ</Link>
+            </Button>
+          </div>
         </motion.div>
-        <h2 className="text-3xl font-bold text-slate-900 uppercase tracking-wider">Đăng ký thành công!</h2>
-        <p className="text-lg text-slate-600 leading-relaxed">
-          Hồ sơ của bạn đã được gửi đi. Chúng tôi sẽ xem xét và liên hệ với bạn trong thời gian sớm nhất.
-        </p>
-        <Button onClick={() => window.location.href = '/'} className="mt-8 rounded-sm uppercase font-bold tracking-wider bg-emerald-700 hover:bg-emerald-800 text-white">
-          Về trang chủ
-        </Button>
       </div>
     );
   }
 
+  // MÀN HÌNH ĐIỀN FORM (Main State)
   return (
-    <div className="max-w-3xl mx-auto space-y-12 pb-16 px-4">
-      <div className="mt-8 mb-12 text-center">
-        <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-tight mb-6 relative inline-block">
-          Trở Thành Gia Sư
-          <motion.span
-            initial={{ width: 0 }}
-            animate={{ width: '100%' }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-            className="absolute -bottom-2 left-0 h-1.5 bg-emerald-700 rounded-full"
-          />
+    <div className="max-w-4xl mx-auto space-y-16 pb-24 px-6 mt-8">
+      
+      {/* Header - Phong cách Editorial */}
+      <div className="text-center max-w-3xl mx-auto">
+        <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent-500 mb-6">
+          <Sparkles className="w-4 h-4" /> Mời gọi sự cống hiến
+        </div>
+        <h1 className="text-4xl lg:text-6xl font-heading text-ink leading-tight mb-6">
+          Trở thành <span className="italic text-primary-700 font-light">người dẫn đường.</span>
         </h1>
-        <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Gia nhập cộng đồng gia sư chất lượng cao. Tải CV của bạn lên, chúng tôi sẽ lo phần còn lại.
+        <p className="text-lg text-ink/70 font-light leading-relaxed">
+          Gia nhập mạng lưới giáo dục tinh hoa. Hãy để câu chuyện, kinh nghiệm và lòng nhiệt thành của bạn chạm đến những học viên đang cần bạn nhất.
         </p>
       </div>
 
+      {/* Ảnh bìa nghệ thuật (Editorial Cover) */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
+        className="w-full h-72 md:h-96 rounded-2xl overflow-hidden relative paper-shadow bg-primary-50"
+      >
+        <img 
+          src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1200&auto=format&fit=crop" 
+          alt="Người dẫn đường" 
+          className="w-full h-full object-cover filter grayscale-[20%]"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent mix-blend-multiply"></div>
+      </motion.div>
+
+      {/* Cảnh báo chưa đăng nhập - Nhẹ nhàng, không dùng màu vàng gắt */}
       {!user && (
-        <div className="bg-amber-50 border border-amber-200 rounded-sm p-4 text-amber-800 font-medium text-center">
-          Bạn cần đăng nhập để có thể gửi hồ sơ đăng ký làm gia sư. Vui lòng đăng nhập ở góc phải màn hình.
+        <div className="bg-paper border-l-2 border-accent-500 p-6 flex items-start sm:items-center gap-4 text-ink/80 font-light">
+          <AlertCircle className="w-5 h-5 text-accent-500 shrink-0 mt-0.5 sm:mt-0" />
+          <p>Danh tính là nền tảng của sự tin cậy. Vui lòng đăng nhập trước khi gửi hồ sơ để chúng tôi có thể bảo vệ quyền lợi của bạn.</p>
         </div>
       )}
 
+      {/* Form Đăng ký */}
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-sm p-8 md:p-12 shadow-sm border border-slate-200"
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+        className="bg-white rounded-3xl p-8 lg:p-14 border border-primary-100 paper-shadow relative"
       >
-        <div className="border-t-4 border-emerald-800 border-b border-b-emerald-800 py-3 mb-8">
-          <h2 className="text-2xl font-bold text-slate-900 uppercase tracking-wider text-center">Thông tin ứng viên</h2>
+        <div className="mb-12 pb-6 border-b border-primary-100">
+          <h2 className="text-2xl font-heading text-ink">Bản giới thiệu bản thân</h2>
+          <p className="text-ink/50 font-light mt-2 text-sm">Những thông tin này sẽ được bảo mật tuyệt đối bởi đội ngũ EduConnect.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-10">
+          
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-sm text-sm font-medium text-center">
-              {error}
+            <div className="bg-accent-50 text-accent-700 px-4 py-3 rounded-lg text-[13px] font-medium flex items-center gap-3">
+              <AlertCircle className="w-4 h-4" /> {error}
             </div>
           )}
           
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-10">
+            {/* Input fields phong cách biểu mẫu giấy */}
             <div>
-              <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Họ và tên</label>
+              <label className="block text-[10px] font-bold text-ink/40 uppercase tracking-[0.2em] mb-2">Danh tính của bạn <span className="text-accent-500">*</span></label>
               <input 
                 required 
                 type="text" 
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleInputChange}
-                placeholder="Nguyễn Văn A" 
-                className="w-full rounded-sm border border-slate-300 px-4 py-3 outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50" 
+                placeholder="VD: Nguyễn Văn A" 
+                className="w-full bg-transparent border-0 border-b border-primary-200 py-3 px-0 text-ink text-[15px] focus:ring-0 focus:border-primary-700 placeholder:text-ink/20 transition-colors" 
               />
             </div>
+            
             <div>
-              <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Số điện thoại</label>
+              <label className="block text-[10px] font-bold text-ink/40 uppercase tracking-[0.2em] mb-2">Số điện thoại liên lạc <span className="text-accent-500">*</span></label>
               <input 
                 required 
                 type="tel" 
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                placeholder="0901234567" 
-                className="w-full rounded-sm border border-slate-300 px-4 py-3 outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50" 
+                placeholder="VD: 090 123 4567" 
+                className="w-full bg-transparent border-0 border-b border-primary-200 py-3 px-0 text-ink text-[15px] focus:ring-0 focus:border-primary-700 placeholder:text-ink/20 transition-colors" 
               />
             </div>
+            
             <div className="md:col-span-2">
-              <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Email</label>
+              <label className="block text-[10px] font-bold text-ink/40 uppercase tracking-[0.2em] mb-2">Thư điện tử (Email) <span className="text-accent-500">*</span></label>
               <input 
                 required 
                 type="email" 
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                placeholder="nguyenvana@example.com" 
-                className="w-full rounded-sm border border-slate-300 px-4 py-3 outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50" 
+                placeholder="VD: nguyenvana@example.com" 
+                className="w-full bg-transparent border-0 border-b border-primary-200 py-3 px-0 text-ink text-[15px] focus:ring-0 focus:border-primary-700 placeholder:text-ink/20 transition-colors" 
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Tải lên CV (PDF, DOCX)</label>
+          <div className="pt-6">
+            <label className="block text-[10px] font-bold text-ink/40 uppercase tracking-[0.2em] mb-4">
+              Bản tóm tắt hành trình (CV) <span className="text-accent-500">*</span>
+            </label>
+            
+            {/* Vùng Drop file thanh lịch */}
             <div 
-              className={`relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-sm transition-colors cursor-pointer ${dragActive ? 'border-emerald-700 bg-emerald-50' : 'border-slate-300 bg-slate-50 hover:bg-slate-100'}`}
+              className={`relative flex flex-col items-center justify-center w-full h-48 border-px border-dashed rounded-2xl transition-all cursor-pointer ${
+                dragActive 
+                  ? 'border-primary-700 bg-primary-50/50' 
+                  : 'border-primary-200 bg-paper/50 hover:bg-primary-50/30 hover:border-primary-300'
+              }`}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
@@ -205,20 +242,39 @@ export function BecomeTutor() {
                 className="hidden" 
                 onChange={handleChange}
               />
+              
               {file ? (
-                <p className="text-lg font-bold text-emerald-800">{file.name}</p>
+                <div className="text-center px-4">
+                  <div className="w-12 h-12 bg-primary-50 text-primary-700 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <FileText className="w-5 h-5 stroke-[1.5]" />
+                  </div>
+                  <p className="text-sm font-semibold text-ink truncate max-w-xs mx-auto">{file.name}</p>
+                  <p className="text-[11px] text-ink/40 mt-1 uppercase tracking-widest">Nhấn để thay đổi tập tin</p>
+                </div>
               ) : (
-                <>
-                  <p className="mb-2 text-sm text-slate-600"><span className="font-bold text-emerald-700 uppercase">Nhấn để tải lên</span> hoặc kéo thả file vào đây</p>
-                  <p className="text-xs text-slate-500 font-medium">Hệ thống sẽ tự động trích xuất thông tin từ CV của bạn</p>
-                </>
+                <div className="text-center px-4">
+                  <div className="w-12 h-12 bg-white text-ink/30 border border-primary-100 rounded-full flex items-center justify-center mx-auto mb-3 paper-shadow">
+                    <UploadCloud className="w-5 h-5 stroke-[1.5]" />
+                  </div>
+                  <p className="text-sm text-ink/70 font-light mb-1">Nhấn để tải lên hoặc kéo thả tập tin</p>
+                  <p className="text-[11px] text-ink/40 uppercase tracking-widest">Định dạng hỗ trợ: PDF, DOCX</p>
+                </div>
               )}
             </div>
           </div>
 
-          <Button type="submit" size="lg" className="w-full text-lg py-6 rounded-sm uppercase font-bold tracking-wider bg-emerald-700 hover:bg-emerald-800 text-white" disabled={loading || !user}>
-            {loading ? 'Đang gửi...' : 'Gửi hồ sơ đăng ký'}
-          </Button>
+          <div className="pt-10 border-t border-primary-100 flex flex-col items-center">
+            <Button 
+              type="submit" 
+              className="w-full md:w-auto h-14 px-12 text-xs tracking-widest shadow-md" 
+              disabled={loading || !user}
+            >
+              {loading ? 'ĐANG LƯU HỒ SƠ...' : 'GỬI TÂM THƯ'}
+            </Button>
+            <p className="text-center text-[11px] text-ink/40 mt-6 font-light">
+              Việc gửi hồ sơ đồng nghĩa bạn đã chấp thuận <a href="#" className="text-primary-700 hover:underline editorial-link">Quy tắc ứng xử</a> của EduConnect.
+            </p>
+          </div>
         </form>
       </motion.div>
     </div>

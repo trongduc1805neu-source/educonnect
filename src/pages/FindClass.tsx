@@ -1,303 +1,198 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
-import { HANOI_WARDS, SUBJECTS, GRADES } from '../constants';
-import { useAuth } from '../contexts/AuthContext';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { Search, MapPin, Calendar, Users, ArrowRight, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export function FindClass() {
-  const { user } = useAuth();
-  const [learningMode, setLearningMode] = useState('Trực tiếp tại nhà');
-  const [subject, setSubject] = useState('');
-  const [grade, setGrade] = useState('');
-  const [ward, setWard] = useState('');
-  const [sessionsPerWeek, setSessionsPerWeek] = useState('2 buổi/tuần');
-  const [expectedFee, setExpectedFee] = useState('');
-  const [additionalRequirements, setAdditionalRequirements] = useState('');
-  
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!user) {
-      setError('Vui lòng đăng nhập để gửi yêu cầu tìm gia sư.');
-      return;
-    }
-
-    if (!subject || !grade || !learningMode || !sessionsPerWeek) {
-      setError('Vui lòng điền đầy đủ các trường bắt buộc (*).');
-      return;
-    }
-
-    if (learningMode !== 'Trực tuyến (Online)' && !ward) {
-      setError('Vui lòng chọn khu vực cho hình thức học trực tiếp.');
-      return;
-    }
-
-    setIsSubmitting(true);
-    setError('');
-
-    try {
-      await addDoc(collection(db, 'class_requests'), {
-        userId: user.uid,
-        subject,
-        grade,
-        learningMode,
-        ward: learningMode !== 'Trực tuyến (Online)' ? ward : null,
-        sessionsPerWeek,
-        expectedFee: expectedFee || null,
-        additionalRequirements: additionalRequirements || null,
-        status: 'pending',
-        createdAt: new Date().toISOString(),
-      });
-
-      setIsSuccess(true);
-    } catch (err) {
-      console.error('Error submitting class request:', err);
-      setError('Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (isSuccess) {
-    return (
-      <div className="max-w-2xl mx-auto pb-16 pt-8 px-4">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-white rounded-sm p-8 shadow-sm border border-slate-200 text-center space-y-6"
-        >
-          <div className="w-24 h-24 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-emerald-200">
-            <span className="text-4xl font-bold">✓</span>
-          </div>
-          <div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-2 uppercase tracking-wider">Gửi yêu cầu thành công!</h2>
-            <p className="text-slate-600 leading-relaxed">
-              Cảm ơn bạn đã tin tưởng EduConnect. Hệ thống AI của chúng tôi đang tiến hành phân tích yêu cầu và sẽ ghép nối bạn với những gia sư phù hợp nhất.
-            </p>
-          </div>
-          <div className="bg-slate-50 rounded-sm p-6 text-left space-y-4 border border-slate-200">
-            <h3 className="font-bold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-2">Các bước tiếp theo:</h3>
-            <ul className="space-y-3 text-sm text-slate-700 font-medium">
-              <li className="flex items-start gap-3">
-                <span className="font-bold text-emerald-700">01.</span>
-                <p>Hệ thống sẽ gửi danh sách gia sư đề xuất qua email và thông báo trên ứng dụng trong vòng 24h.</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="font-bold text-emerald-700">02.</span>
-                <p>Bạn có thể xem hồ sơ chi tiết và chọn gia sư ưng ý nhất.</p>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="font-bold text-emerald-700">03.</span>
-                <p>Tiến hành học thử 1 buổi (miễn phí) trước khi quyết định học chính thức.</p>
-              </li>
-            </ul>
-          </div>
-          <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/dashboard" className="w-full sm:w-auto">
-              <Button className="w-full rounded-sm uppercase font-bold tracking-wider bg-emerald-700 hover:bg-emerald-800 text-white">Về trang quản lý</Button>
-            </Link>
-            <Button variant="outline" className="w-full sm:w-auto rounded-sm uppercase font-bold tracking-wider border-emerald-700 text-emerald-700 hover:bg-emerald-50" onClick={() => {
-              setIsSuccess(false);
-              setSubject('');
-              setGrade('');
-              setWard('');
-              setExpectedFee('');
-              setAdditionalRequirements('');
-            }}>
-              Đăng yêu cầu khác
-            </Button>
-          </div>
-        </motion.div>
-      </div>
-    );
+const MOCK_CLASSES = [
+  {
+    id: 1,
+    title: 'Luyện đề Toán 12 - Trọng điểm hình học',
+    subject: 'Toán Học',
+    tutor: 'Thầy Nguyễn Hải Anh',
+    tutorImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop',
+    schedule: 'Tối Thứ 3 & Thứ 6 (19:30 - 21:00)',
+    location: 'Quận Đống Đa, Hà Nội',
+    mode: 'Trực tiếp',
+    price: '150.000đ',
+    enrolled: 3,
+    capacity: 5,
+    startDate: '15/11/2026',
+    tags: ['Luyện đề', 'Mục tiêu 8+']
+  },
+  {
+    id: 2,
+    title: 'Phân tích định lượng SPSS cơ bản',
+    subject: 'Nghiên cứu khoa học',
+    tutor: 'Nghiên cứu viên Khánh Lê',
+    tutorImage: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop',
+    schedule: 'Sáng Chủ Nhật (08:30 - 11:30)',
+    location: 'Google Meet',
+    mode: 'Trực tuyến',
+    price: '200.000đ',
+    enrolled: 8,
+    capacity: 10,
+    startDate: '20/11/2026',
+    tags: ['SPSS', 'Sinh viên đại học']
+  },
+  {
+    id: 3,
+    title: 'Ngữ Văn Khối 10 - Cảm thụ văn học',
+    subject: 'Ngữ Văn',
+    tutor: 'Cô Trần Phương Ly',
+    tutorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+    schedule: 'Tối Thứ 4 (18:00 - 20:00)',
+    location: 'Quận Cầu Giấy, Hà Nội',
+    mode: 'Trực tiếp',
+    price: '180.000đ',
+    enrolled: 2,
+    capacity: 4,
+    startDate: '01/12/2026',
+    tags: ['Xây gốc', 'Học sinh mới']
   }
+];
+
+export function FindClass() {
+  const [searchTerm, setSearchTerm] = useState('');
 
   return (
-    <div className="max-w-3xl mx-auto pb-16 px-4">
-      <div className="text-center space-y-4 mb-12 mt-8">
-        <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-tight mb-6 relative inline-block">
-          Đăng yêu cầu Tìm Lớp / Tìm Gia Sư
-          <motion.span
-            initial={{ width: 0 }}
-            animate={{ width: '100%' }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-            className="absolute -bottom-2 left-0 h-1.5 bg-emerald-700 rounded-full"
-          />
-        </h1>
-        <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Điền thông tin chi tiết về nhu cầu học tập của bạn. Hệ thống AI của chúng tôi sẽ tự động ghép nối bạn với những gia sư phù hợp nhất trong vòng 24h.
-        </p>
-      </div>
-
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="rounded-sm bg-white p-8 md:p-12 shadow-sm border border-slate-200"
-      >
-        <div className="border-t-4 border-emerald-800 border-b border-b-emerald-800 py-3 mb-8">
-          <h2 className="text-2xl font-bold text-slate-900 uppercase tracking-wider text-center">Phiếu Yêu Cầu Gia Sư</h2>
+    <div className="max-w-7xl mx-auto px-6 pb-24 mt-8">
+      
+      {/* Header */}
+      <header className="mb-16 max-w-3xl">
+        <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent-500 mb-4">
+          <BookOpen className="w-4 h-4" /> Danh mục khóa học
         </div>
+        <h1 className="text-4xl lg:text-5xl font-heading text-ink mb-6 leading-tight">
+          Giảng đường <span className="italic text-primary-700 font-normal">thu nhỏ.</span>
+        </h1>
+        <p className="text-lg text-ink/70 font-light leading-relaxed">
+          Tham gia vào các không gian học tập nhóm được thiết kế tỉ mỉ. Tối ưu hóa chi phí, nhân đôi nguồn cảm hứng từ những người bạn đồng hành.
+        </p>
+      </header>
 
-        <form className="space-y-8" onSubmit={handleSubmit}>
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-sm text-sm font-medium text-center">
-              {error}
+      <div className="flex flex-col lg:flex-row gap-12">
+        
+        {/* Sidebar Bộ lọc */}
+        <aside className="w-full lg:w-72 shrink-0">
+          <div className="sticky top-28 space-y-10">
+            <div className="border-b border-primary-200 pb-2">
+              <h4 className="text-[11px] font-bold text-ink/40 uppercase tracking-[0.2em] flex items-center gap-2">
+                <Search className="w-4 h-4" /> Tìm kiếm lớp
+              </h4>
             </div>
-          )}
-
-          {!user && (
-            <div className="bg-amber-50 border border-amber-200 rounded-sm p-4 text-amber-800 font-medium text-center">
-              Bạn cần đăng nhập để có thể gửi yêu cầu tìm gia sư. Vui lòng đăng nhập ở góc phải màn hình.
-            </div>
-          )}
-
-          <div className="space-y-6">
-            <h3 className="text-lg font-bold text-emerald-800 uppercase tracking-wider border-b border-emerald-100 pb-2">
-              Thông tin môn học
-            </h3>
             
-            <div className="grid sm:grid-cols-2 gap-6">
+            <div className="space-y-8">
               <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Môn học cần tìm *</label>
-                <select 
-                  className="w-full rounded-sm border border-slate-300 p-3 text-sm outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50"
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  required
-                >
-                  <option value="">Chọn môn học</option>
-                  {SUBJECTS.map(s => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Lớp / Trình độ *</label>
-                <select 
-                  className="w-full rounded-sm border border-slate-300 p-3 text-sm outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50"
-                  value={grade}
-                  onChange={(e) => setGrade(e.target.value)}
-                  required
-                >
-                  <option value="">Chọn lớp</option>
-                  {GRADES.map(g => (
-                    <option key={g} value={g}>{g}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <h3 className="text-lg font-bold text-emerald-800 uppercase tracking-wider border-b border-emerald-100 pb-2 mt-8">
-              Hình thức & Địa điểm
-            </h3>
-            
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Hình thức học *</label>
-                <select 
-                  className="w-full rounded-sm border border-slate-300 p-3 text-sm outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50"
-                  value={learningMode}
-                  onChange={(e) => setLearningMode(e.target.value)}
-                  required
-                >
-                  <option value="Trực tiếp tại nhà">Trực tiếp tại nhà</option>
-                  <option value="Trực tuyến (Online)">Trực tuyến (Online)</option>
-                  <option value="Linh hoạt cả hai">Linh hoạt cả hai</option>
-                </select>
-              </div>
-              {learningMode !== 'Trực tuyến (Online)' && (
-                <div>
-                  <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Khu vực *</label>
-                  <select 
-                    className="w-full rounded-sm border border-slate-300 p-3 text-sm outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50"
-                    value={ward}
-                    onChange={(e) => setWard(e.target.value)}
-                    required={learningMode !== 'Trực tuyến (Online)'}
-                  >
-                    <option value="">Chọn khu vực</option>
-                    {HANOI_WARDS.map((w) => (
-                      <option key={w} value={w}>{w}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <h3 className="text-lg font-bold text-emerald-800 uppercase tracking-wider border-b border-emerald-100 pb-2 mt-8">
-              Thời gian & Học phí
-            </h3>
-            
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Số buổi / tuần *</label>
-                <select 
-                  className="w-full rounded-sm border border-slate-300 p-3 text-sm outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50"
-                  value={sessionsPerWeek}
-                  onChange={(e) => setSessionsPerWeek(e.target.value)}
-                  required
-                >
-                  <option value="1 buổi/tuần">1 buổi/tuần</option>
-                  <option value="2 buổi/tuần">2 buổi/tuần</option>
-                  <option value="3 buổi/tuần">3 buổi/tuần</option>
-                  <option value="Nhiều hơn">Nhiều hơn</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Mức học phí dự kiến (VNĐ/buổi)</label>
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Tên lớp / Môn học</label>
                 <input 
                   type="text" 
-                  placeholder="VD: 200.000 - 250.000" 
-                  className="w-full rounded-sm border border-slate-300 p-3 text-sm outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50" 
-                  value={expectedFee}
-                  onChange={(e) => setExpectedFee(e.target.value)}
+                  placeholder="Nhập từ khóa..." 
+                  className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 placeholder:text-ink/30 transition-colors"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
+
+              <div>
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Không gian học</label>
+                <select className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer">
+                  <option value="">Tất cả hình thức</option>
+                  <option value="offline">Trực tiếp (Tại nhà)</option>
+                  <option value="online">Trực tuyến (Online)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Tình trạng chỗ</label>
+                <select className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer">
+                  <option value="">Tất cả</option>
+                  <option value="available">Đang mở đăng ký (Còn chỗ)</option>
+                  <option value="full">Đã đủ học viên</option>
+                </select>
+              </div>
+
+              <Button className="w-full text-xs tracking-widest shadow-none hover:shadow-md mt-4">
+                LỌC DANH SÁCH
+              </Button>
             </div>
           </div>
+        </aside>
 
-          <div className="space-y-6">
-            <h3 className="text-lg font-bold text-emerald-800 uppercase tracking-wider border-b border-emerald-100 pb-2 mt-8">
-              Yêu cầu thêm
-            </h3>
-            
-            <div>
-              <label className="block text-sm font-bold text-slate-900 mb-2 uppercase">Mô tả chi tiết yêu cầu về gia sư</label>
-              <textarea 
-                rows={4} 
-                placeholder="VD: Cần gia sư nữ, sinh viên năm 3 trở lên trường ĐH Sư Phạm, kiên nhẫn vì cháu hơi chậm..." 
-                className="w-full rounded-sm border border-slate-300 p-3 text-sm outline-none focus:border-emerald-700 focus:ring-1 focus:ring-emerald-700 resize-none bg-slate-50"
-                value={additionalRequirements}
-                onChange={(e) => setAdditionalRequirements(e.target.value)}
-              ></textarea>
-            </div>
-          </div>
-
-          <div className="pt-8">
-            <Button 
-              type="submit" 
-              size="lg" 
-              className="w-full text-lg py-6 rounded-sm uppercase font-bold tracking-wider bg-emerald-700 hover:bg-emerald-800 text-white"
-              disabled={isSubmitting || !user}
+        {/* Danh sách lớp học */}
+        <div className="flex-1 space-y-6">
+          {MOCK_CLASSES.map((cls, idx) => (
+            <motion.div 
+              key={cls.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.15, duration: 0.6 }}
+              className="group bg-white p-6 sm:p-8 border border-primary-100 rounded-2xl paper-shadow hover:border-primary-300 transition-colors flex flex-col md:flex-row gap-8"
             >
-              {isSubmitting ? 'Đang gửi...' : 'Gửi Yêu Cầu Tìm Gia Sư'}
-            </Button>
-            <p className="text-center text-xs text-slate-500 mt-4 font-medium">
-              Bằng việc gửi yêu cầu, bạn đồng ý với các điều khoản dịch vụ và chính sách bảo mật của EduConnect VN.
-            </p>
-          </div>
-        </form>
-      </motion.div>
+              {/* Lịch & Sĩ số (Khối thông tin bên trái) */}
+              <div className="w-full md:w-40 shrink-0 flex flex-row md:flex-col justify-between md:justify-start gap-4 border-b md:border-b-0 md:border-r border-primary-100 pb-4 md:pb-0 md:pr-6">
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-1">Khai giảng</div>
+                  <div className="text-xl font-heading text-ink">{cls.startDate}</div>
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-1">Sĩ số</div>
+                  <div className="text-xl font-heading text-primary-700">
+                    {cls.enrolled}<span className="text-sm text-ink/30">/{cls.capacity}</span>
+                  </div>
+                  <div className="text-[10px] text-accent-500 font-medium mt-1">Còn {cls.capacity - cls.enrolled} chỗ</div>
+                </div>
+              </div>
+
+              {/* Chi tiết lớp học */}
+              <div className="flex-1 flex flex-col">
+                <div className="flex justify-between items-start mb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary-700 bg-primary-50 px-2 py-1 rounded">
+                    {cls.subject}
+                  </span>
+                  <div className="text-right">
+                    <div className="text-lg font-heading text-ink">{cls.price}</div>
+                    <div className="text-[10px] text-ink/40 uppercase tracking-widest">/ buổi</div>
+                  </div>
+                </div>
+
+                <h3 className="text-2xl font-heading text-ink mb-4 group-hover:text-primary-700 transition-colors">
+                  <Link to={`/class/${cls.id}`}>{cls.title}</Link>
+                </h3>
+
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-2 text-[13px] text-ink/70">
+                    <img src={cls.tutorImage} alt="Tutor" className="w-5 h-5 rounded-full object-cover" />
+                    Giảng viên: <span className="font-medium text-ink">{cls.tutor}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[13px] text-ink/70">
+                    <Calendar className="w-4 h-4 text-primary-700" />
+                    {cls.schedule}
+                  </div>
+                  <div className="flex items-center gap-2 text-[13px] text-ink/70">
+                    <MapPin className="w-4 h-4 text-primary-700" />
+                    {cls.mode} — {cls.location}
+                  </div>
+                </div>
+
+                <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6 border-t border-primary-50">
+                  <div className="flex gap-2">
+                    {cls.tags.map(tag => (
+                      <span key={tag} className="text-[10px] font-semibold text-ink/50 uppercase tracking-widest border border-primary-100 px-2 py-1 rounded">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <Button className="w-full sm:w-auto text-[11px] h-10 px-6 tracking-widest">
+                    ĐĂNG KÝ HỌC <ArrowRight className="w-3 h-3 ml-2" />
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

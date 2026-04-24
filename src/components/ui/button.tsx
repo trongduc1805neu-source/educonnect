@@ -9,24 +9,37 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-sm text-sm font-bold uppercase tracking-wider ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  /* Base styles: 
+     - Sử dụng font-medium và tracking-wide (khoảng cách chữ rộng)
+     - Bo góc nhẹ nhàng (rounded-lg) tạo cảm giác hiện đại nhưng vẫn mực thước
+     - Chuyển động (transition) mượt mà 
+  */
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium tracking-wide ring-offset-paper transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-700 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-emerald-700 text-white hover:bg-emerald-800 shadow-sm hover:shadow-md",
-        destructive:
-          "bg-red-600 text-white hover:bg-red-700",
-        outline:
-          "border border-emerald-700 bg-transparent text-emerald-700 hover:bg-emerald-50",
-        secondary:
-          "bg-slate-100 text-slate-900 hover:bg-slate-200",
-        ghost: "hover:bg-emerald-50 hover:text-emerald-800",
-        link: "text-emerald-700 underline-offset-4 hover:underline",
+        /* Default: Xanh ngọc bích thẫm, chữ trắng - Sang trọng và tin cậy */
+        default: "bg-primary-700 text-white hover:bg-primary-900 shadow-sm hover:shadow-md",
+        
+        /* Destructive: Màu cam gạch ấm, thay vì màu đỏ gắt của AI thông thường */
+        destructive: "bg-accent-500 text-white hover:bg-accent-600 shadow-sm",
+        
+        /* Outline: Đường viền mỏng manh, chữ đen thẫm */
+        outline: "border border-primary-200 bg-transparent text-ink hover:bg-primary-50 hover:border-primary-300",
+        
+        /* Secondary: Màu của các khối thông tin phụ trên tạp chí */
+        secondary: "bg-primary-50 text-primary-900 hover:bg-primary-100",
+        
+        /* Ghost: Tối giản tối đa, chỉ hiện diện khi tương tác */
+        ghost: "hover:bg-primary-50 hover:text-primary-800 text-ink/70",
+        
+        /* Link: Áp dụng hiệu ứng gạch dưới mỏng (editorial underline) */
+        link: "text-primary-700 underline-offset-8 hover:underline decoration-[1px]",
       },
       size: {
-        default: "h-11 px-6 py-2",
-        sm: "h-9 rounded-sm px-4 text-xs",
-        lg: "h-14 rounded-sm px-8 text-base",
+        default: "h-11 px-7 py-2",
+        sm: "h-9 px-4 text-xs",
+        lg: "h-14 px-10 text-base font-semibold",
         icon: "h-11 w-11",
       },
     },

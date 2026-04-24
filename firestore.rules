@@ -110,14 +110,14 @@ service cloud.firestore {
                     isOwner(userId) && 
                     isValidUser(request.resource.data) && 
                     uidUnchanged() &&
-                    ((request.resource.data.role == 'student') || isAdmin());
+                    ((request.resource.data.role in ['student', 'tutor']) || isAdmin());
       allow update: if isAuthenticated() && 
                     isOwner(userId) && 
                     isValidUser(request.resource.data) && 
                     uidNotModified() &&
                     request.resource.data.email == resource.data.email &&
                     request.resource.data.createdAt == resource.data.createdAt &&
-                    ((request.resource.data.role == resource.data.role) || isAdmin());
+                    ((request.resource.data.role in ['student', 'tutor']) || isAdmin());
     }
 
     match /tutor_applications/{applicationId} {
