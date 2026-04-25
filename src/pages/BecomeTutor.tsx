@@ -96,7 +96,7 @@ export function BecomeTutor() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-3xl p-12 lg:p-16 border border-primary-100 paper-shadow text-center relative overflow-hidden"
+          className="bg-[#FDFBF7] rounded-3xl p-12 lg:p-16 border border-primary-100 paper-shadow text-center relative overflow-hidden"
         >
           {/* Họa tiết trang trí góc */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
@@ -124,9 +124,6 @@ export function BecomeTutor() {
       
       {/* Header - Phong cách Editorial */}
       <div className="text-center max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent-500 mb-6">
-          <Sparkles className="w-4 h-4" /> Mời gọi sự cống hiến
-        </div>
         <h1 className="text-4xl lg:text-6xl font-heading text-ink leading-tight mb-6">
           Trở thành <span className="italic text-primary-700 font-light">người dẫn đường.</span>
         </h1>
@@ -135,19 +132,7 @@ export function BecomeTutor() {
         </p>
       </div>
 
-      {/* Ảnh bìa nghệ thuật (Editorial Cover) */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
-        className="w-full h-72 md:h-96 rounded-2xl overflow-hidden relative paper-shadow bg-primary-50"
-      >
-        <img 
-          src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1200&auto=format&fit=crop" 
-          alt="Người dẫn đường" 
-          className="w-full h-full object-cover filter grayscale-[20%]"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent mix-blend-multiply"></div>
-      </motion.div>
+
 
       {/* Cảnh báo chưa đăng nhập - Nhẹ nhàng, không dùng màu vàng gắt */}
       {!user && (
@@ -160,7 +145,7 @@ export function BecomeTutor() {
       {/* Form Đăng ký */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-        className="bg-white rounded-3xl p-8 lg:p-14 border border-primary-100 paper-shadow relative"
+        className="bg-[#FDFBF7] rounded-3xl p-8 lg:p-14 border border-primary-100 paper-shadow relative"
       >
         <div className="mb-12 pb-6 border-b border-primary-100">
           <h2 className="text-2xl font-heading text-ink">Bản giới thiệu bản thân</h2>
@@ -253,7 +238,7 @@ export function BecomeTutor() {
                 </div>
               ) : (
                 <div className="text-center px-4">
-                  <div className="w-12 h-12 bg-white text-ink/30 border border-primary-100 rounded-full flex items-center justify-center mx-auto mb-3 paper-shadow">
+                  <div className="w-12 h-12 bg-[#FDFBF7] text-ink/30 border border-primary-100 rounded-full flex items-center justify-center mx-auto mb-3 paper-shadow">
                     <UploadCloud className="w-5 h-5 stroke-[1.5]" />
                   </div>
                   <p className="text-sm text-ink/70 font-light mb-1">Nhấn để tải lên hoặc kéo thả tập tin</p>

@@ -17,7 +17,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-zinc-200 shadow-sm">
+    <nav className="sticky top-0 z-50 w-full bg-[#FDFBF7]/80 backdrop-blur-md border-b border-zinc-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -71,7 +71,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-b border-zinc-200 shadow-sm absolute w-full">
+        <div className="md:hidden bg-[#FDFBF7] border-b border-zinc-200 shadow-sm absolute w-full">
           <div className="px-4 pt-2 pb-3 space-y-1">
             <Link to="/find-tutor" className="text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 block px-4 py-3 rounded-md text-base font-semibold transition-colors">Tìm Gia Sư</Link>
             <Link to="/find-class" className="text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 block px-4 py-3 rounded-md text-base font-semibold transition-colors">Nhận Lớp</Link>

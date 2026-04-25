@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
@@ -35,10 +36,69 @@ const FEATURED_TUTORS = [
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop',
     education: 'Đại học Bách khoa Hà Nội',
     quote: '"Vật lý không nằm trên giấy, nó hiện hữu trong từng chuyển động của cuộc sống."',
+  },
+  {
+    id: 4,
+    name: 'Phạm Tuấn Anh',
+    subject: 'Tiếng Anh - IELTS',
+    rating: 4.9,
+    price: '300.000đ',
+    image: 'https://images.unsplash.com/photo-1544717302-de2939b7ef71?q=80&w=600&auto=format&fit=crop',
+    education: 'Đại học Ngoại Thương',
+    quote: '"Ngôn ngữ mở ra thế giới, điểm số chỉ là trạm dừng chân."',
   }
 ];
 
 export function Home() {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const updateCards = () => {
+      if (carouselRef.current) {
+        const cards = carouselRef.current.querySelectorAll('.tutor-card-3d');
+        const centerX = window.innerWidth / 2;
+
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const cardCenterX = rect.left + rect.width / 2;
+          const distance = Math.abs(centerX - cardCenterX);
+          
+          // Max distance considered for scaling
+          const maxDist = window.innerWidth / 2;
+          
+          // Calculate scale (1 at center, ~0.75 at edges)
+          let scale = 1 - (distance / maxDist) * 0.3;
+          if (scale < 0.7) scale = 0.7;
+          
+          // Calculate rotation based on side
+          const signedDistance = cardCenterX - centerX;
+          // Rotate towards the center
+          const rotateYClamped = Math.max(-30, Math.min(30, (signedDistance / maxDist) * 30));
+          
+          const zIndex = Math.round(100 - distance);
+          const isHovered = card.getAttribute('data-hovered') === 'true';
+
+          if (isHovered) {
+            (card as HTMLElement).style.transform = `perspective(1200px) rotateY(0deg) scale(1.1) translateZ(50px)`;
+            (card as HTMLElement).style.zIndex = '200';
+            (card as HTMLElement).style.opacity = '1';
+          } else {
+            // Apply scale, rotation and slight opacity drop for side elements
+            (card as HTMLElement).style.transform = `perspective(1200px) rotateY(${rotateYClamped}deg) scale(${scale})`;
+            (card as HTMLElement).style.zIndex = zIndex.toString();
+            (card as HTMLElement).style.opacity = Math.max(0.4, 1 - (distance / maxDist) * 0.6).toString();
+          }
+        });
+      }
+      animationFrameId = requestAnimationFrame(updateCards);
+    };
+
+    updateCards();
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } }
@@ -73,24 +133,24 @@ export function Home() {
             </p>
 
             {/* Thanh tìm kiếm Minimalist - Thoát khỏi giao diện Form nhàm chán */}
-            <div className="mt-10 bg-white p-2 rounded-xl border border-primary-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col sm:flex-row gap-2 max-w-2xl relative z-20">
-              <div className="flex-1 px-4 py-3 border-b sm:border-b-0 sm:border-r border-primary-50">
+            <div className="mt-10 bg-[#FDFBF7] p-2 rounded-xl border border-primary-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col sm:flex-row gap-2 max-w-2xl relative z-20">
+              <div className="flex-1 px-4 py-3 border-b sm:border-b-0 sm:border-r border-primary-50 text-center">
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-1">Môn học</label>
-                <select className="w-full bg-transparent text-ink outline-none cursor-pointer text-sm font-semibold appearance-none">
-                  <option value="">Chọn môn học...</option>
+                <select className="w-full bg-transparent text-ink outline-none cursor-pointer text-sm font-semibold appearance-none text-center">
+                  <option value="">Chọn môn học</option>
                   {SUBJECTS.map(subject => <option key={subject} value={subject}>{subject}</option>)}
                 </select>
               </div>
-              <div className="flex-1 px-4 py-3 border-b sm:border-b-0 sm:border-r border-primary-50">
+              <div className="flex-1 px-4 py-3 border-b sm:border-b-0 sm:border-r border-primary-50 text-center">
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-1">Vị trí</label>
-                <select className="w-full bg-transparent text-ink outline-none cursor-pointer text-sm font-semibold appearance-none">
-                  <option value="">Khu vực học...</option>
+                <select className="w-full bg-transparent text-ink outline-none cursor-pointer text-sm font-semibold appearance-none text-center">
+                  <option value="">Khu vực học</option>
                   <optgroup label="Hà Nội">
                     {HANOI_WARDS.map((ward) => <option key={ward} value={ward}>{ward}</option>)}
                   </optgroup>
                 </select>
               </div>
-              <Button size="lg" className="w-full sm:w-auto shrink-0 bg-primary-700 text-white rounded-lg px-10">
+              <Button size="lg" className="w-full sm:w-auto shrink-0 self-center mx-auto text-center bg-primary-700 text-white rounded-lg px-10">
                 TÌM KIẾM
               </Button>
             </div>
@@ -105,8 +165,8 @@ export function Home() {
           >
             <div className="aspect-[4/5] rounded-2xl overflow-hidden relative bg-primary-50">
               <img 
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" 
-                alt="Sinh viên học tập" 
+                src="https://i.ibb.co/GfVkb056/GV-Yeu-TV-3407-1632217612.jpg" 
+                alt="GV-Yeu-TV-3407-1632217612" 
                 className="object-cover w-full h-full hover:scale-105 transition-transform duration-1000"
               />
               {/* Lớp phủ mờ nhẹ để tạo chiều sâu */}
@@ -114,7 +174,7 @@ export function Home() {
             </div>
             
             {/* Box trích dẫn bay (Floating Quote) */}
-            <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-xl border border-primary-100 shadow-xl max-w-[240px]">
+            <div className="absolute -bottom-8 -left-8 bg-[#FDFBF7] p-6 rounded-xl border border-primary-100 shadow-xl max-w-[240px]">
               <div className="flex gap-1 mb-3 text-accent-500 text-xs">★★★★★</div>
               <p className="text-[13px] font-medium text-ink/80 italic leading-relaxed">
                 "Hành trình học tập của con tôi đã thay đổi hoàn toàn nhờ sự thấu hiểu từ gia sư EduConnect."
@@ -138,47 +198,71 @@ export function Home() {
           </Link>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {FEATURED_TUTORS.map((tutor, idx) => (
-            <motion.div 
-              key={tutor.id}
-              initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { delay: idx * 0.15, duration: 0.8 } }
-              }}
-              className="group cursor-pointer"
-            >
-              {/* Hình ảnh đen trắng xám, khi hover sẽ hiện màu thật (Kỹ thuật tạp chí thời trang) */}
-              <div className="aspect-[3/4] overflow-hidden rounded-xl mb-6 relative bg-primary-50">
-                <img 
-                  src={tutor.image} 
-                  alt={tutor.name} 
-                  className="w-full h-full object-cover filter grayscale-[40%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out" 
-                />
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full text-[11px] font-bold text-ink flex items-center gap-1 shadow-sm">
-                  {tutor.rating} <span className="text-accent-500">★</span>
-                </div>
+        <div className="w-full relative overflow-hidden py-10 my-4" style={{ perspective: '1200px' }} ref={carouselRef}>
+          {/* Blend edges for depth */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-paper to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-paper to-transparent z-10 pointer-events-none"></div>
+
+          <motion.div 
+            className="flex w-max"
+            animate={{ x: ["0%", "-33.333333%"] }}
+            transition={{ duration: 30, ease: "linear", repeat: Infinity }}
+          >
+            {[0, 1, 2].map((setIndex) => (
+              <div key={setIndex} className="flex gap-8 pr-8">
+                {FEATURED_TUTORS.map((tutor, idx) => (
+                  <div 
+                    key={`${tutor.id}-${idx}`}
+                    className="tutor-card-3d w-[280px] sm:w-[320px] shrink-0 group cursor-pointer relative"
+                    style={{ 
+                      transformStyle: 'preserve-3d', 
+                      transform: 'rotateY(-10deg) scale(0.95)',
+                      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.setAttribute('data-hovered', 'true');
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.setAttribute('data-hovered', 'false');
+                    }}
+                  >
+                    {/* Hình ảnh đen trắng xám, khi hover sẽ hiện màu thật (Kỹ thuật tạp chí thời trang) */}
+                    <div className="aspect-[3/4] overflow-hidden rounded-2xl mb-5 relative bg-primary-50 shadow-2xl shadow-primary-900/10">
+                      <img 
+                        src={tutor.image} 
+                        alt={tutor.name} 
+                        className="w-full h-full object-cover filter grayscale-[60%] group-hover:grayscale-0 transition-all duration-700 ease-out" 
+                      />
+                      <div className="absolute top-4 right-4 bg-[#FDFBF7]/90 backdrop-blur px-3 py-1.5 rounded-full text-[11px] font-bold text-ink flex items-center gap-1 shadow-sm">
+                        {tutor.rating} <span className="text-accent-500">★</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3 bg-[#FDFBF7] p-6 rounded-2xl border border-primary-100 paper-shadow group-hover:border-primary-300 transition-colors">
+                      <div className="flex items-center justify-between gap-2">
+                        <Link to={`/profile/${tutor.id}`}>
+                          <h3 className="font-heading text-xl text-ink group-hover:text-primary-700 transition-colors truncate">{tutor.name}</h3>
+                        </Link>
+                      </div>
+                      
+                      <div className="flex items-center justify-between border-b border-primary-100 pb-3">
+                        <p className="text-[11px] font-bold text-accent-500 uppercase tracking-widest">{tutor.subject}</p>
+                        <span className="text-xs font-semibold text-ink/60 shrink-0">{tutor.price}/h</span>
+                      </div>
+                      
+                      <p className="text-ink/70 text-sm italic leading-relaxed pt-1 line-clamp-3">
+                        {tutor.quote}
+                      </p>
+                      
+                      <div className="pt-2 text-[10px] font-bold text-primary-700 uppercase tracking-widest truncate">
+                        {tutor.education}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              
-              <div className="space-y-3">
-                <div className="flex justify-between items-baseline">
-                  <h3 className="font-heading text-2xl text-ink group-hover:text-primary-700 transition-colors">{tutor.name}</h3>
-                  <span className="text-sm font-semibold text-ink/50">{tutor.price}/h</span>
-                </div>
-                
-                <p className="text-[11px] font-bold text-accent-500 uppercase tracking-widest">{tutor.subject}</p>
-                
-                <p className="text-ink/70 text-[15px] italic leading-relaxed border-l-[1.5px] border-primary-200 pl-4 py-1">
-                  {tutor.quote}
-                </p>
-                
-                <div className="pt-2 text-[11px] font-semibold text-ink/40 uppercase tracking-widest">
-                  {tutor.education}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+            ))}
+          </motion.div>
         </div>
       </section>
 

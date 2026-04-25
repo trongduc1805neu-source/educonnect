@@ -34,7 +34,7 @@ export function AdBanner({ imageUrl, linkUrl, altText }: AdBannerProps) {
       >
         <FontAwesomeIcon icon={['fas', 'xmark']} />
       </button>
-      <div className="absolute top-2 left-2 bg-white/80 backdrop-blur-sm text-zinc-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+      <div className="absolute top-2 left-2 bg-[#FDFBF7]/80 backdrop-blur-sm text-zinc-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
         Quảng cáo
       </div>
     </div>

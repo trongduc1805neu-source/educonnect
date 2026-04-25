@@ -45,7 +45,7 @@ export function FindInHomeTutor() {
     <div className="flex flex-col lg:flex-row gap-8 px-4 pb-20 mt-4">
       {/* Sidebar Filters */}
       <aside className="w-full lg:w-72 shrink-0 space-y-6">
-        <div className="rounded-2xl bg-white p-6 sm:p-8 border border-zinc-200 shadow-sm">
+        <div className="rounded-2xl bg-[#FDFBF7] p-6 sm:p-8 border border-zinc-200 shadow-sm">
           <div className="border-b-2 border-zinc-200 pb-4 mb-6">
             <h2 className="font-extrabold text-zinc-900 uppercase tracking-wider text-base sm:text-lg flex items-center gap-2">
               <FontAwesomeIcon icon={['fas', 'filter']} className="text-xl" /> Bộ lọc tìm kiếm
@@ -93,7 +93,7 @@ export function FindInHomeTutor() {
       {/* Main Content */}
       <div className="flex-1 space-y-8">
         <div className="mb-10 bg-zinc-50 p-6 sm:p-8 rounded-2xl border border-zinc-200 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full mix-blend-overlay filter blur-xl opacity-50"></div>
+          <div className="absolute top-0 right-0 w-40 h-40 bg-[#FDFBF7] rounded-full mix-blend-overlay filter blur-xl opacity-50"></div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 tracking-tight mb-4 relative z-10">
             Tìm gia sư <span className=" ">dạy kèm tại nhà</span>
           </h1>
@@ -105,7 +105,7 @@ export function FindInHomeTutor() {
           <input 
             type="text" 
             placeholder="Tìm kiếm theo môn học, tên gia sư, hoặc khu vực..." 
-            className="w-full rounded-xl border-2 border-zinc-200 bg-white py-4 sm:py-5 px-6 sm:px-8 text-zinc-900 shadow-sm outline-none focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100 transition-all text-base sm:text-lg font-medium pr-16"
+            className="w-full rounded-xl border-2 border-zinc-200 bg-[#FDFBF7] py-4 sm:py-5 px-6 sm:px-8 text-zinc-900 shadow-sm outline-none focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100 transition-all text-base sm:text-lg font-medium pr-16"
           />
           <div className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-zinc-900 rounded-xl flex items-center justify-center text-white shadow-sm cursor-pointer hover:bg-zinc-800 transition-colors">
             <FontAwesomeIcon icon={['fas', 'magnifying-glass']} />
@@ -129,7 +129,7 @@ export function FindInHomeTutor() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className="flex flex-col sm:flex-row gap-6 sm:gap-8 rounded-2xl bg-white p-6 sm:p-8 border border-zinc-200 shadow-sm hover:shadow-sm transition-all relative overflow-hidden group"
+                className="flex flex-col sm:flex-row gap-6 sm:gap-8 rounded-2xl bg-[#FDFBF7] p-6 sm:p-8 border border-zinc-200 shadow-sm hover:shadow-sm transition-all relative overflow-hidden group"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-zinc-50     rounded-bl-[4rem] -z-10 transition-transform group-hover:scale-110"></div>
                 

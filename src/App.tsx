@@ -173,17 +173,26 @@ function Navigation() {
   );
 }
 
+import { EditorTeam } from './pages/admin/EditorTeam';
+import { EditorTutors } from './pages/admin/EditorTutors';
+import { EditorClasses } from './pages/admin/EditorClasses';
+import { Footer } from './components/Footer';
+import { FAQ } from './pages/FAQ';
+import { Onboarding } from './pages/Onboarding';
+import { Payment } from './pages/Payment';
+
 export default function App() {
   return (
     <Router>
       {/* Bao bọc toàn bộ App trong màu giấy (bg-paper) và font chữ chung */}
-      <div className="min-h-screen bg-paper font-sans text-ink selection:bg-primary-200 selection:text-primary-900">
+      <div className="min-h-screen bg-paper font-sans text-ink selection:bg-primary-200 selection:text-primary-900 flex flex-col">
         <Navigation />
 
-        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/tutors" element={<Search />} />
             <Route path="/classes" element={<FindClass />} />
             <Route path="/match-class" element={<MatchClass />} />
@@ -191,12 +200,21 @@ export default function App() {
             <Route path="/find-tutor" element={<FindInHomeTutor />} />
             <Route path="/contact" element={<Contact />} />
             
+            {/* Chuyên trang Biên tập / Admin */}
+            <Route path="/admin/team" element={<EditorTeam />} />
+            <Route path="/admin/tutors" element={<EditorTutors />} />
+            <Route path="/admin/classes" element={<EditorClasses />} />
+            
             {/* Các route ẩn */}
             <Route path="/search" element={<Search />} />
             <Route path="/profile/:id" element={<TutorProfile />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/payment" element={<Payment />} />
           </Routes>
         </main>
+        
+        <Footer />
       </div>
     </Router>
   );

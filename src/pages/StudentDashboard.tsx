@@ -1,8 +1,13 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
 import { Wallet, CalendarClock, BookOpen, Clock, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export function StudentDashboard() {
+  const navigate = useNavigate();
+  const [confirmStep, setConfirmStep] = useState<0 | 1 | 2>(0);
+  
   return (
     <div className="max-w-7xl mx-auto space-y-12 pb-24 px-6">
       
@@ -26,26 +31,27 @@ export function StudentDashboard() {
 
       {/* Top Stats - Chỉ số tổng quan thiết kế dạng thẻ tối giản */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
         {/* Quỹ học tập (Wallet) */}
-        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-primary-900 p-8 shadow-xl text-paper relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary-700 rounded-full blur-2xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
+        <motion.div whileHover={{ y: -4 }} className="rounded-[40px] bg-[#FDFBF7] p-8 border border-primary-100 paper-shadow relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-full blur-2xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
           <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-6 opacity-80">
-              <Wallet className="w-5 h-5 text-accent-500" />
+            <div className="flex items-center gap-3 mb-6 text-ink/50">
+              <Wallet className="w-5 h-5 text-primary-700" />
               <span className="text-[10px] font-bold uppercase tracking-widest">Quỹ Học Tập</span>
             </div>
-            <div className="text-3xl font-heading mb-2">1.500.000đ</div>
-            <div className="text-[11px] text-paper/60 font-light tracking-wide uppercase">
+            <div className="text-3xl font-heading text-ink mb-2">1.500.000đ</div>
+            <div className="text-[11px] text-ink/60 font-light tracking-wide uppercase">
               Đã nạp 2.000.000đ tháng này
             </div>
-            <Button variant="secondary" className="w-full mt-8 text-[11px] tracking-widest h-10 bg-white/10 border-none text-white hover:bg-white hover:text-primary-900 transition-colors">
+            <Button onClick={() => navigate('/payment', { state: { type: 'wallet', data: { name: 'Nạp quỹ học tập', fee: '500.000đ' } } })} variant="outline" className="w-full mt-8 text-[11px] tracking-widest h-10 border-primary-100 hover:border-primary-300">
               NẠP THÊM
             </Button>
           </div>
         </motion.div>
 
         {/* Lịch học sắp tới */}
-        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-white p-8 border border-primary-100 paper-shadow">
+        <motion.div whileHover={{ y: -4 }} className="rounded-[40px] bg-[#FDFBF7] p-8 border border-primary-100 paper-shadow">
           <div className="flex items-center gap-3 mb-6 text-ink/50">
             <CalendarClock className="w-5 h-5 text-primary-700" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Lịch Trình</span>
@@ -60,7 +66,7 @@ export function StudentDashboard() {
         </motion.div>
 
         {/* Sổ liên lạc mới */}
-        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-white p-8 border border-primary-100 paper-shadow">
+        <motion.div whileHover={{ y: -4 }} className="rounded-[40px] bg-[#FDFBF7] p-8 border border-primary-100 paper-shadow">
           <div className="flex items-center gap-3 mb-6 text-ink/50">
             <BookOpen className="w-5 h-5 text-primary-700" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Nhật Ký</span>
@@ -75,7 +81,7 @@ export function StudentDashboard() {
         </motion.div>
 
         {/* Tổng giờ học */}
-        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-white p-8 border border-primary-100 paper-shadow">
+        <motion.div whileHover={{ y: -4 }} className="rounded-[40px] bg-[#FDFBF7] p-8 border border-primary-100 paper-shadow">
           <div className="flex items-center gap-3 mb-6 text-ink/50">
             <Clock className="w-5 h-5 text-primary-700" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Tích Lũy</span>
@@ -95,7 +101,7 @@ export function StudentDashboard() {
         {/* Cột trái: Sổ liên lạc & AI Insights */}
         <div className="lg:col-span-8 space-y-12">
           
-          <div className="bg-white rounded-3xl p-8 lg:p-12 border border-primary-100 paper-shadow relative overflow-hidden">
+          <div className="bg-primary-50/40 backdrop-blur-sm rounded-[40px] p-8 lg:p-12 border border-primary-100 paper-shadow relative overflow-hidden">
             {/* Header của phần Nhật ký */}
             <div className="flex items-center justify-between mb-10 pb-6 border-b border-primary-100">
               <h2 className="text-3xl font-heading text-ink">
@@ -179,7 +185,7 @@ export function StudentDashboard() {
         <div className="lg:col-span-4 space-y-10">
           
           {/* Thanh toán chờ xử lý (Escrow Pending) */}
-          <div className="bg-white rounded-3xl p-8 border border-primary-100 paper-shadow">
+          <div className="bg-primary-50/40 backdrop-blur-sm rounded-[40px] p-8 border border-primary-100 paper-shadow">
             <div className="mb-6 pb-4 border-b border-primary-100">
               <h2 className="text-sm font-bold text-ink/50 uppercase tracking-[0.2em] flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-accent-500" /> Xác nhận giải ngân
@@ -199,15 +205,27 @@ export function StudentDashboard() {
                   Quỹ học tập đang giữ khoản tiền này. Vui lòng xác nhận chất lượng buổi học để hệ thống gửi thù lao cho người dạy.
                 </p>
                 <div className="flex gap-3">
-                  <Button size="sm" className="w-full text-[10px] h-10 tracking-widest px-0">XÁC NHẬN</Button>
-                  <Button size="sm" variant="outline" className="w-full text-[10px] h-10 tracking-widest px-0 border-primary-200 text-ink/60 hover:text-accent-500 hover:border-accent-200">KHIẾU NẠI</Button>
+                  {confirmStep === 0 && (
+                    <Button onClick={() => setConfirmStep(1)} size="sm" className="w-full text-[10px] h-10 tracking-widest px-0">XÁC NHẬN</Button>
+                  )}
+                  {confirmStep === 1 && (
+                    <Button onClick={() => setConfirmStep(2)} size="sm" className="w-full text-[10px] h-10 tracking-widest px-0 bg-accent-500 hover:bg-accent-600 text-white">CHẮC CHẮN?</Button>
+                  )}
+                  {confirmStep === 2 && (
+                    <Button size="sm" className="w-full text-[10px] h-10 tracking-widest px-0 bg-emerald-600 hover:bg-emerald-700 text-white cursor-default opacity-100">
+                      <CheckCircle2 className="w-4 h-4 mr-1.5" /> ĐÃ XÁC NHẬN
+                    </Button>
+                  )}
+                  {confirmStep !== 2 && (
+                    <Button onClick={() => setConfirmStep(0)} size="sm" variant="outline" className="w-full text-[10px] h-10 tracking-widest px-0 border-primary-200 text-ink/60 hover:text-accent-500 hover:border-accent-200">KHIẾU NẠI</Button>
+                  )}
                 </div>
               </div>
             </div>
           </div>
 
           {/* Lịch học sắp tới */}
-          <div className="bg-white rounded-3xl p-8 border border-primary-100 paper-shadow">
+          <div className="bg-primary-50/40 backdrop-blur-sm rounded-[40px] p-8 border border-primary-100 paper-shadow">
             <div className="mb-8 pb-4 border-b border-primary-100">
               <h2 className="text-sm font-bold text-ink/50 uppercase tracking-[0.2em]">
                 Lịch trình sắp tới

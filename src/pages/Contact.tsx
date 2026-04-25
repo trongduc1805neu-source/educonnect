@@ -1,103 +1,130 @@
 import { motion } from 'framer-motion';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { Button } from '../components/ui/button';
 
 export function Contact() {
   return (
-    <div className="max-w-5xl mx-auto pb-16 px-4">
-      <div className="text-center mb-12 mt-8 bg-zinc-50 p-12 rounded-2xl border border-zinc-200 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full mix-blend-overlay filter blur-3xl opacity-50"></div>
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-zinc-200 rounded-full mix-blend-overlay filter blur-3xl opacity-50"></div>
-        <h1 className="text-4xl md:text-5xl font-extrabold text-zinc-900 tracking-tight mb-6 relative z-10">
-          Liên hệ với <span className=" ">chúng tôi</span>
+    <div className="max-w-6xl mx-auto space-y-16 pb-24 px-6 mt-8">
+      {/* Header - Editorial Style */}
+      <header className="space-y-10 max-w-3xl">
+        <h1 className="text-5xl lg:text-6xl font-heading text-ink leading-tight">
+          Sẵn sàng <br />
+          <span className="italic text-primary-700 font-light">lắng nghe bạn.</span>
         </h1>
-        <p className="text-lg text-zinc-600 max-w-2xl mx-auto font-medium relative z-10">
-          Bạn có câu hỏi hay cần hỗ trợ? Đội ngũ EduConnect VN luôn sẵn sàng lắng nghe và giải đáp mọi thắc mắc của bạn.
+        <p className="text-lg text-ink/70 font-light leading-relaxed">
+          Bạn có câu hỏi, đề xuất hay cần hỗ trợ? Đội ngũ EduConnect luôn ở đây, sẵn sàng giải đáp và đồng hành cùng bạn trên mọi chặng đường.
         </p>
-      </div>
+      </header>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1 space-y-6">
-          <motion.div whileHover={{ y: -5 }} className="rounded-2xl bg-white p-8 border border-zinc-200 shadow-sm hover:shadow-sm transition-all relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-zinc-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-12 h-12 rounded-2xl bg-zinc-100 text-zinc-900 flex items-center justify-center text-2xl">📞</span>
-              <h3 className="font-extrabold text-zinc-900 text-xl">Hotline</h3>
-            </div>
-            <div>
-              <p className="text-zinc-900 font-extrabold text-2xl">1900 1234</p>
-              <p className="text-sm text-zinc-500 mt-2 font-medium">Thứ 2 - Chủ nhật (8:00 - 22:00)</p>
-            </div>
-          </motion.div>
-
-          <motion.div whileHover={{ y: -5 }} className="rounded-2xl bg-white p-8 border border-zinc-200 shadow-sm hover:shadow-sm transition-all relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-zinc-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-12 h-12 rounded-2xl bg-zinc-100 text-zinc-600 flex items-center justify-center text-2xl">✉️</span>
-              <h3 className="font-extrabold text-zinc-900 text-xl">Email</h3>
-            </div>
-            <div>
-              <p className="text-zinc-600 font-extrabold text-xl">support@educonnect.vn</p>
-              <p className="text-sm text-zinc-500 mt-2 font-medium">Phản hồi trong vòng 24h</p>
-            </div>
-          </motion.div>
-
-          <motion.div whileHover={{ y: -5 }} className="rounded-2xl bg-white p-8 border border-zinc-200 shadow-sm hover:shadow-sm transition-all relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-zinc-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-12 h-12 rounded-2xl bg-zinc-100 text-zinc-900 flex items-center justify-center text-2xl">🏢</span>
-              <h3 className="font-extrabold text-zinc-900 text-xl">Văn phòng</h3>
-            </div>
-            <div>
-              <p className="text-zinc-600 font-medium leading-relaxed">Tầng 12, Tòa nhà Tech, 123 Đường ABC, Quận Cầu Giấy, Hà Nội</p>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="lg:col-span-2">
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="rounded-2xl bg-white p-8 md:p-12 border border-zinc-200 shadow-sm relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-zinc-50     rounded-bl-full -z-10"></div>
-            <div className="flex items-center gap-3 mb-8">
-              <span className="w-12 h-12 rounded-2xl bg-zinc-100 text-zinc-900 flex items-center justify-center text-2xl">💬</span>
-              <h2 className="text-3xl font-extrabold text-zinc-900 tracking-tight">Gửi tin nhắn</h2>
-            </div>
-            <form className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-bold text-zinc-700 mb-2">Họ và tên <span className="text-zinc-600">*</span></label>
-                  <input type="text" placeholder="Nhập họ tên của bạn" className="w-full rounded-2xl border-2 border-zinc-200 p-4 text-sm outline-none focus:border-zinc-900 focus:ring-4 focus:ring-zinc-1000/10 bg-zinc-50/50 text-zinc-900 transition-all font-medium placeholder:text-zinc-400" />
+      {/* Main Content Layout */}
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
+        
+        {/* Contact Info Sidebar */}
+        <aside className="w-full lg:w-1/3 space-y-6 shrink-0">
+          {[
+            {
+              icon: Phone,
+              title: "Hotline",
+              content: "1900 1234",
+              sub: "Thứ 2 - Chủ nhật (8:00 - 22:00)",
+            },
+            {
+              icon: Mail,
+              title: "Email",
+              content: "support@educonnect.vn",
+              sub: "Phản hồi trong vòng 24h",
+            },
+            {
+              icon: MapPin,
+              title: "Văn phòng",
+              content: "EduConnect HQ",
+              sub: "Tầng 12, Tòa nhà Tech, 123 Đường ABC, Cầu Giấy, Hà Nội",
+            }
+          ].map((item, index) => (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              key={index}
+              className="bg-primary-50/40 backdrop-blur-sm rounded-3xl p-6 border border-primary-100 shadow-sm flex flex-col group hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-primary-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+              
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-primary-50 text-primary-700 flex items-center justify-center group-hover:bg-primary-700 group-hover:text-white transition-colors duration-500 shrink-0">
+                  <item.icon className="w-5 h-5 stroke-[1.5]" />
                 </div>
-                <div>
-                  <label className="block text-sm font-bold text-zinc-700 mb-2">Số điện thoại <span className="text-zinc-600">*</span></label>
-                  <input type="tel" placeholder="Nhập số điện thoại" className="w-full rounded-2xl border-2 border-zinc-200 p-4 text-sm outline-none focus:border-zinc-900 focus:ring-4 focus:ring-zinc-1000/10 bg-zinc-50/50 text-zinc-900 transition-all font-medium placeholder:text-zinc-400" />
-                </div>
+                <h3 className="font-heading text-xl text-ink">{item.title}</h3>
               </div>
               
-              <div>
-                <label className="block text-sm font-bold text-zinc-700 mb-2">Email</label>
-                <input type="email" placeholder="Nhập địa chỉ email" className="w-full rounded-2xl border-2 border-zinc-200 p-4 text-sm outline-none focus:border-zinc-900 focus:ring-4 focus:ring-zinc-1000/10 bg-zinc-50/50 text-zinc-900 transition-all font-medium placeholder:text-zinc-400" />
+              <div className="mt-auto">
+                <p className="text-lg text-ink font-bold mb-1">{item.content}</p>
+                <p className="text-sm font-medium text-ink/50">{item.sub}</p>
               </div>
+            </motion.div>
+          ))}
+        </aside>
 
-              <div>
-                <label className="block text-sm font-bold text-zinc-700 mb-2">Nội dung tin nhắn <span className="text-zinc-600">*</span></label>
-                <textarea 
-                  rows={5} 
-                  placeholder="Bạn cần chúng tôi hỗ trợ vấn đề gì?" 
-                  className="w-full rounded-2xl border-2 border-zinc-200 p-4 text-sm outline-none focus:border-zinc-900 focus:ring-4 focus:ring-zinc-1000/10 resize-none bg-zinc-50/50 text-zinc-900 transition-all font-medium placeholder:text-zinc-400"
-                ></textarea>
-              </div>
+        {/* Contact Form */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="flex-1 w-full bg-primary-50/40 backdrop-blur-sm rounded-[40px] p-8 md:p-12 border border-primary-100 shadow-sm relative overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary-50 rounded-bl-full -z-10"></div>
+          
+          <div className="mb-10">
+            <h2 className="text-3xl lg:text-4xl font-heading text-ink mb-3">Gửi tin nhắn</h2>
+            <p className="text-ink/60 font-light">Chúng tôi sẽ phản hồi bạn sớm nhất có thể.</p>
+          </div>
 
-              <div className="pt-4">
-                <Button size="lg" className="w-full sm:w-auto rounded-2xl font-bold bg-zinc-900 hover:bg-zinc-800 text-white px-8 h-12 shadow-sm hover:shadow-sm">
-                  Gửi tin nhắn
-                </Button>
+          <form className="space-y-6 relative z-10">
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-ink/70">Họ và tên <span className="text-accent-500">*</span></label>
+                <input 
+                  type="text" 
+                  placeholder="Nhập họ tên của bạn" 
+                  className="w-full rounded-2xl border border-primary-100 p-4 text-sm focus:border-primary-300 focus:ring-1 focus:ring-primary-300 focus:outline-none bg-transparent text-ink transition-all placeholder:text-ink/30" 
+                />
               </div>
-            </form>
-          </motion.div>
-        </div>
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-ink/70">Số điện thoại <span className="text-accent-500">*</span></label>
+                <input 
+                  type="tel" 
+                  placeholder="Nhập số điện thoại" 
+                  className="w-full rounded-2xl border border-primary-100 p-4 text-sm focus:border-primary-300 focus:ring-1 focus:ring-primary-300 focus:outline-none bg-transparent text-ink transition-all placeholder:text-ink/30" 
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-ink/70">Email</label>
+              <input 
+                type="email" 
+                placeholder="Nhập địa chỉ email" 
+                className="w-full rounded-2xl border border-primary-100 p-4 text-sm focus:border-primary-300 focus:ring-1 focus:ring-primary-300 focus:outline-none bg-transparent text-ink transition-all placeholder:text-ink/30" 
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-ink/70">Nội dung tin nhắn <span className="text-accent-500">*</span></label>
+              <textarea 
+                rows={5} 
+                placeholder="Bạn cần chúng tôi hỗ trợ vấn đề gì?" 
+                className="w-full rounded-2xl border border-primary-100 p-4 text-sm focus:border-primary-300 focus:ring-1 focus:ring-primary-300 focus:outline-none resize-none bg-transparent text-ink transition-all placeholder:text-ink/30"
+              ></textarea>
+            </div>
+
+            <div className="pt-4">
+              <Button size="lg" className="w-full rounded-2xl font-bold bg-primary-700 hover:bg-primary-800 text-white px-8 h-14 tracking-wide shadow-sm flex items-center justify-center gap-2 group">
+                <span>Gửi tin nhắn</span>
+                <Send className="w-4 h-4 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+          </form>
+        </motion.div>
       </div>
     </div>
   );

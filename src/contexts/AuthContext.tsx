@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 
 enum OperationType {
@@ -61,6 +61,7 @@ interface UserData {
   photoURL: string | null;
   role: 'student' | 'tutor' | 'admin';
   createdAt: string;
+  onboardingCompleted?: boolean;
 }
 
 interface AuthContextType {
@@ -90,37 +91,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (currentUser) {
         try {
-          // Save user to Firestore
           const userRef = doc(db, 'users', currentUser.uid);
+          const intendedRole = sessionStorage.getItem('intendedRole') as 'student' | 'tutor' | null;
           const userSnap = await getDoc(userRef);
           
           if (!userSnap.exists()) {
-            const intendedRole = sessionStorage.getItem('intendedRole') as 'student' | 'tutor' | 'admin' | null;
             const newUserData: UserData = {
               uid: currentUser.uid,
               email: currentUser.email,
               displayName: currentUser.displayName,
               photoURL: currentUser.photoURL,
-              role: intendedRole || 'student', // default role
+              role: intendedRole || 'student',
               createdAt: new Date().toISOString(),
             };
             await setDoc(userRef, newUserData);
             setUserData(newUserData);
-            sessionStorage.removeItem('intendedRole');
           } else {
             const existingData = userSnap.data() as UserData;
-            const intendedRole = sessionStorage.getItem('intendedRole') as 'student' | 'tutor' | 'admin' | null;
             
-            // If they log in as tutor but are currently a student, upgrade them
-            if (intendedRole === 'tutor' && existingData.role === 'student') {
-              const updatedData = { ...existingData, role: 'tutor' as const };
+            if (intendedRole && intendedRole !== existingData.role) {
+              const updatedData = { 
+                ...existingData, 
+                role: intendedRole,
+                email: existingData.email || currentUser.email || '',
+                createdAt: existingData.createdAt || new Date().toISOString()
+              };
               await setDoc(userRef, updatedData, { merge: true });
               setUserData(updatedData);
             } else {
               setUserData(existingData);
             }
-            sessionStorage.removeItem('intendedRole');
           }
+          sessionStorage.removeItem('intendedRole');
         } catch (error) {
           handleFirestoreError(error, OperationType.GET, `users/${currentUser.uid}`);
         }

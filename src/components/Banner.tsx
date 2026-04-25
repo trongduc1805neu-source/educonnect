@@ -56,7 +56,7 @@ export function Banner() {
         </div>
         <div className="container mx-auto px-4 py-3 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex-1 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
-            <span className="font-bold text-sm sm:text-base uppercase tracking-wider bg-white/20 px-2 py-1 rounded">
+            <span className="font-bold text-sm sm:text-base uppercase tracking-wider bg-[#FDFBF7]/20 px-2 py-1 rounded">
               {currentBanner.title}
             </span>
             <span className="text-sm sm:text-base text-white/90">
@@ -66,13 +66,13 @@ export function Banner() {
           <div className="flex items-center gap-4">
             <a 
               href={currentBanner.link}
-              className="text-sm font-semibold bg-white text-zinc-900 px-4 py-1.5 rounded-full hover:bg-zinc-100 transition-colors whitespace-nowrap"
+              className="text-sm font-semibold bg-[#FDFBF7] text-zinc-900 px-4 py-1.5 rounded-full hover:bg-zinc-100 transition-colors whitespace-nowrap"
             >
               Xem ngay
             </a>
             <button 
               onClick={() => setIsVisible(false)}
-              className="p-1 hover:bg-white/20 rounded-full transition-colors"
+              className="p-1 hover:bg-[#FDFBF7]/20 rounded-full transition-colors"
               aria-label="Đóng quảng cáo"
             >
               <FontAwesomeIcon icon={['fas', 'xmark']} className="w-5 h-5" />

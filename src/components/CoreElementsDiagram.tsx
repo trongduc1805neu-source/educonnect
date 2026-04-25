@@ -23,7 +23,7 @@ export const CoreElementsDiagram: React.FC = () => {
       </div>
 
       {/* Diagram */}
-      <div className="w-64 h-80 border-2 border-gray-800 rounded-lg flex flex-col overflow-hidden shadow-sm bg-white relative">
+      <div className="w-64 h-80 border-2 border-gray-800 rounded-lg flex flex-col overflow-hidden shadow-sm bg-[#FDFBF7] relative">
         {/* Top Header */}
         <div className="h-6 bg-zinc-500 border-b-2 border-gray-800"></div>
         {/* Navigation */}

@@ -1,70 +1,31 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginModal } from '../components/LoginModal';
 import { HANOI_WARDS, SUBJECTS } from '../constants';
 import { Search as SearchIcon, MapPin, Award, BookOpen, Star } from 'lucide-react';
 
 // Dữ liệu mẫu mang hơi thở học thuật và bám sát thực tế sinh viên/giáo viên
-const MOCK_TUTORS = [
-  {
-    id: 1,
-    name: 'Nguyễn Hải Anh',
-    title: 'Giáo viên Toán THCS',
-    subject: 'Toán Học - Khối 9',
-    rating: 4.9,
-    reviews: 124,
-    price: '200.000đ',
-    distance: 'Cầu Giấy (2.5 km)',
-    mode: 'Trực tiếp / Trực tuyến',
-    verified: true,
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop',
-    tags: ['Tư duy logic', 'Lấy lại căn bản'],
-    education: 'Đại học Sư phạm Hà Nội',
-    experience: '5 năm kinh nghiệm giảng dạy',
-    achievements: '90% học sinh đỗ NV1'
-  },
-  {
-    id: 2,
-    name: 'Khánh Lê',
-    title: 'Nghiên cứu viên trẻ',
-    subject: 'Phân tích Định lượng & SPSS',
-    rating: 5.0,
-    reviews: 42,
-    price: '250.000đ',
-    distance: 'Hai Bà Trưng (1.2 km)',
-    mode: 'Trực tuyến',
-    verified: true,
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=600&auto=format&fit=crop',
-    tags: ['Nghiên cứu khoa học', 'Xử lý dữ liệu'],
-    education: 'Đại học Kinh tế Quốc dân (NEU)',
-    experience: 'Trợ giảng bộ môn Thống kê',
-    achievements: 'Giải Nhất NCKH cấp Trường'
-  },
-  {
-    id: 3,
-    name: 'Lê Hoàng Minh',
-    title: 'Sinh viên xuất sắc',
-    subject: 'Vật Lý - Khối 10',
-    rating: 4.8,
-    reviews: 56,
-    price: '220.000đ',
-    distance: 'Đống Đa (3.0 km)',
-    mode: 'Trực tiếp',
-    verified: true,
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop',
-    tags: ['Ôn thi học sinh giỏi', 'Dạy dễ hiểu'],
-    education: 'Đại học Bách Khoa Hà Nội',
-    experience: 'Cựu học sinh chuyên Lý khối KHTN',
-    achievements: 'Giúp học sinh tăng trung bình 2 điểm'
-  }
-];
+import { MOCK_TUTORS } from '../data/tutors';
 
 export function Search() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [learningMode, setLearningMode] = useState('Tất cả hình thức');
+  const navigate = useNavigate();
+
+  const filteredTutors = MOCK_TUTORS.filter(tutor => {
+    // keyword
+    if (searchTerm && !tutor.name.toLowerCase().includes(searchTerm.toLowerCase()) && !tutor.subject.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return false;
+    }
+    // learning mode
+    if (learningMode !== 'Tất cả hình thức' && !tutor.mode.toLowerCase().includes(learningMode.toLowerCase())) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <div className="max-w-7xl mx-auto px-6 pb-24 mt-8">
@@ -86,39 +47,40 @@ export function Search() {
       <div className="flex flex-col lg:flex-row gap-16">
         
         {/* Sidebar Filters - Thiết kế như một biểu mẫu điền tay (Fill-in-the-blank) */}
-        <aside className="w-full lg:w-72 shrink-0">
-          <div className="sticky top-28 space-y-10">
-            <div className="border-b border-primary-200 pb-2">
-              <h4 className="text-[11px] font-bold text-ink/40 uppercase tracking-[0.2em] flex items-center gap-2">
-                <SearchIcon className="w-4 h-4" /> Tinh chỉnh kết quả
+        <aside className="w-full lg:w-80 shrink-0">
+          <div className="sticky top-28 bg-[#FDFBF7] rounded-[32px] p-8 border border-primary-100 shadow-xl shadow-primary-900/5 space-y-8">
+            <div className="border-b border-primary-100 pb-4 mb-2">
+              <h4 className="text-[12px] font-bold text-ink uppercase tracking-[0.2em] flex items-center gap-2">
+                <SearchIcon className="w-4 h-4 text-primary-700" /> Tinh chỉnh kết quả
               </h4>
             </div>
             
-            <div className="space-y-8">
-              {/* Form Input: Chỉ dùng gạch dưới, không dùng viền bao quanh (border-box) */}
+            <div className="space-y-6">
               <div>
-                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Từ khóa</label>
-                <input 
-                  type="text" 
-                  placeholder="Tên, môn học..." 
-                  className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 placeholder:text-ink/30 transition-colors"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Từ khóa</label>
+                <div className="relative">
+                  <input 
+                    type="text" 
+                    placeholder="Tên, môn học..." 
+                    className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 placeholder:text-ink/30 transition-all font-medium"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Môn học</label>
-                <select className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer">
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Môn học</label>
+                <select className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all">
                   <option value="">Tất cả lĩnh vực</option>
                   {SUBJECTS.map(subject => <option key={subject} value={subject}>{subject}</option>)}
                 </select>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Hình thức học</label>
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Hình thức học</label>
                 <select 
-                  className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer"
+                  className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all"
                   value={learningMode}
                   onChange={(e) => setLearningMode(e.target.value)}
                 >
@@ -130,24 +92,26 @@ export function Search() {
 
               {learningMode !== 'Trực tuyến' && (
                 <div>
-                  <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Khu vực (Hà Nội)</label>
-                  <select className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer">
+                  <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Khu vực (Hà Nội)</label>
+                  <select className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all">
                     <option value="">Khắp thành phố</option>
                     {HANOI_WARDS.map((ward) => <option key={ward} value={ward}>{ward}</option>)}
                   </select>
                 </div>
               )}
 
-              <Button className="w-full text-xs tracking-widest shadow-none hover:shadow-md mt-4">
-                CẬP NHẬT
-              </Button>
+              <div className="pt-2">
+                <Button className="w-full h-12 text-xs tracking-widest shadow-md">
+                  ÁP DỤNG BỘ LỌC
+                </Button>
+              </div>
             </div>
           </div>
         </aside>
 
         {/* Main Content - Danh sách hiển thị theo dạng "List" trải dài thay vì "Grid Card" */}
         <div className="flex-1 space-y-12">
-          {MOCK_TUTORS.map((tutor, idx) => (
+          {filteredTutors.map((tutor, idx) => (
             <motion.div 
               key={tutor.id}
               initial={{ opacity: 0, y: 20 }}
@@ -159,11 +123,11 @@ export function Search() {
               <Link to={`/profile/${tutor.id}`} className="w-full md:w-48 shrink-0 block">
                 <div className="aspect-[3/4] overflow-hidden rounded-xl bg-primary-50 relative paper-shadow">
                   <img 
-                    src={tutor.image} 
+                    src={tutor.photoURL} 
                     alt={tutor.name} 
                     className="w-full h-full object-cover filter grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
                   />
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] font-bold text-ink flex items-center gap-1">
+                  <div className="absolute top-3 right-3 bg-[#FDFBF7]/90 backdrop-blur px-2 py-1 rounded text-[10px] font-bold text-ink flex items-center gap-1">
                     {tutor.rating} <Star className="w-3 h-3 fill-accent-500 text-accent-500" />
                   </div>
                 </div>
@@ -179,7 +143,7 @@ export function Search() {
                     <p className="text-accent-500 font-semibold text-sm uppercase tracking-widest">{tutor.subject}</p>
                   </div>
                   <div className="text-left md:text-right">
-                    <div className="text-xl font-heading text-primary-700 mb-1">{tutor.price}<span className="text-sm font-sans text-ink/40">/h</span></div>
+                    <div className="text-xl font-heading text-primary-700 mb-1">{tutor.fee}<span className="text-sm font-sans text-ink/40">/h</span></div>
                     <span className="text-[11px] font-medium text-ink/40 uppercase tracking-wider">{tutor.reviews} Đánh giá</span>
                   </div>
                 </div>
@@ -188,7 +152,7 @@ export function Search() {
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-6 text-[13px] text-ink/70">
                   <div className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-ink/40" /> {tutor.distance}</div>
                   <div className="flex items-center gap-1.5"><BookOpen className="w-4 h-4 text-ink/40" /> {tutor.mode}</div>
-                  {tutor.verified && (
+                  {tutor.isVerified && (
                     <div className="flex items-center gap-1.5 text-primary-700 font-medium">
                       <Award className="w-4 h-4" /> Đã xác thực
                     </div>
@@ -214,7 +178,7 @@ export function Search() {
                     <Link to={`/profile/${tutor.id}`} className="text-[11px] font-bold text-ink/50 hover:text-primary-700 uppercase tracking-widest editorial-link">
                       Xem chi tiết
                     </Link>
-                    <Button onClick={() => setIsLoginModalOpen(true)} className="text-[11px] h-9 px-5 tracking-widest">
+                    <Button onClick={() => navigate('/payment', { state: { type: 'tutor', data: tutor } })} className="text-[11px] h-9 px-5 tracking-widest">
                       KẾT NỐI NGAY
                     </Button>
                   </div>

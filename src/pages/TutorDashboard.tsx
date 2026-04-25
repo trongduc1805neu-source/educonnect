@@ -66,25 +66,26 @@ export function TutorDashboard() {
 
       {/* Top Stats - Thống kê mượt mà */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
         {/* Thu nhập */}
-        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-primary-900 p-8 shadow-xl text-paper relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary-700 rounded-full blur-2xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
+        <motion.div whileHover={{ y: -4 }} className="rounded-[40px] bg-[#FDFBF7] p-8 border border-primary-100 paper-shadow relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-full blur-2xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
           <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-6 opacity-80">
+            <div className="flex items-center gap-3 mb-6 text-ink/50">
               <span className="text-[10px] font-bold uppercase tracking-widest">Thù lao tháng này</span>
             </div>
-            <div className="text-3xl font-heading mb-2">4.500.000đ</div>
-            <div className="text-[11px] text-paper/60 font-light tracking-wide uppercase">
+            <div className="text-3xl font-heading text-ink mb-2">4.500.000đ</div>
+            <div className="text-[11px] text-ink/60 font-light tracking-wide uppercase">
               Tăng 12% so với tháng trước
             </div>
-            <Button variant="secondary" className="w-full mt-8 text-[11px] tracking-widest h-10 bg-white/10 border-none text-white hover:bg-white hover:text-primary-900 transition-colors">
+            <Button variant="outline" className="w-full mt-8 text-[11px] tracking-widest h-10 border-primary-100 hover:border-primary-300">
               RÚT TIỀN VỀ VÍ
             </Button>
           </div>
         </motion.div>
 
         {/* Học sinh đang nhận */}
-        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-white p-8 border border-primary-100 paper-shadow">
+        <motion.div whileHover={{ y: -4 }} className="rounded-[40px] bg-[#FDFBF7] p-8 border border-primary-100 paper-shadow">
           <div className="flex items-center gap-3 mb-6 text-ink/50">
             <Users className="w-5 h-5 text-primary-700" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Học viên đồng hành</span>
@@ -99,7 +100,7 @@ export function TutorDashboard() {
         </motion.div>
 
         {/* Lời mời chờ phản hồi */}
-        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-white p-8 border border-primary-100 paper-shadow">
+        <motion.div whileHover={{ y: -4 }} className="rounded-[40px] bg-[#FDFBF7] p-8 border border-primary-100 paper-shadow">
           <div className="flex items-center gap-3 mb-6 text-ink/50">
             <BookOpen className="w-5 h-5 text-primary-700" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Lời mời dạy học</span>
@@ -114,7 +115,7 @@ export function TutorDashboard() {
         </motion.div>
 
         {/* Giờ dạy */}
-        <motion.div whileHover={{ y: -4 }} className="rounded-2xl bg-white p-8 border border-primary-100 paper-shadow">
+        <motion.div whileHover={{ y: -4 }} className="rounded-[40px] bg-[#FDFBF7] p-8 border border-primary-100 paper-shadow">
           <div className="flex items-center gap-3 mb-6 text-ink/50">
             <Clock className="w-5 h-5 text-primary-700" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Thời gian cống hiến</span>
@@ -135,7 +136,7 @@ export function TutorDashboard() {
         <div className="lg:col-span-8 space-y-12">
           
           {/* Lịch lên lớp hôm nay */}
-          <div className="bg-white rounded-3xl p-8 lg:p-10 border border-primary-100 paper-shadow">
+          <div className="bg-primary-50/40 backdrop-blur-sm rounded-[40px] p-8 lg:p-10 border border-primary-100 paper-shadow">
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-primary-100">
               <h2 className="text-2xl font-heading text-ink">
                 Lịch lên lớp hôm nay
@@ -183,7 +184,7 @@ export function TutorDashboard() {
           </div>
 
           {/* Lớp ghép mới đăng (Cơ hội mới) */}
-          <div className="bg-white rounded-3xl p-8 lg:p-10 border border-primary-100 paper-shadow">
+          <div className="bg-primary-50/40 backdrop-blur-sm rounded-[40px] p-8 lg:p-10 border border-primary-100 paper-shadow">
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-primary-100">
               <h2 className="text-2xl font-heading text-ink">
                 Cơ hội kết nối mới
@@ -198,7 +199,7 @@ export function TutorDashboard() {
             ) : recentRequests.length > 0 ? (
               <div className="space-y-6">
                 {recentRequests.map((req) => (
-                  <div key={req.id} className="p-6 rounded-2xl bg-primary-50/50 border border-primary-100 hover:bg-white hover:shadow-md transition-all group">
+                  <div key={req.id} className="p-6 rounded-2xl bg-primary-50/50 border border-primary-100 hover:bg-[#FDFBF7] hover:shadow-md transition-all group">
                     <div className="flex justify-between items-start mb-4">
                       <h3 className="font-heading text-xl text-ink group-hover:text-primary-700 transition-colors">{req.subject} - Khối {req.grade}</h3>
                       <span className="text-[10px] font-bold uppercase tracking-widest text-accent-500 bg-accent-50 px-2 py-1 rounded">
@@ -241,7 +242,7 @@ export function TutorDashboard() {
         <div className="lg:col-span-4 space-y-10">
           
           {/* Nhắc nhở chuyên môn (Sổ liên lạc) */}
-          <div className="bg-white rounded-3xl p-8 border border-primary-100 paper-shadow">
+          <div className="bg-primary-50/40 backdrop-blur-sm rounded-[40px] p-8 border border-primary-100 paper-shadow">
             <div className="mb-6 pb-4 border-b border-primary-100">
               <h2 className="text-sm font-bold text-ink/50 uppercase tracking-[0.2em] flex items-center gap-2">
                 <PenTool className="w-4 h-4 text-accent-500" /> Cần hoàn thiện
@@ -259,7 +260,7 @@ export function TutorDashboard() {
           </div>
 
           {/* Biến động thu nhập */}
-          <div className="bg-white rounded-3xl p-8 border border-primary-100 paper-shadow">
+          <div className="bg-primary-50/40 backdrop-blur-sm rounded-[40px] p-8 border border-primary-100 paper-shadow">
             <div className="mb-6 pb-4 border-b border-primary-100">
               <h2 className="text-sm font-bold text-ink/50 uppercase tracking-[0.2em]">
                 Dòng chảy thu nhập

@@ -18,6 +18,10 @@ export function Dashboard() {
     return <Navigate to="/" replace />;
   }
 
+  if (userData && !userData.onboardingCompleted) {
+    return <Navigate to="/onboarding" replace />;
+  }
+
   if (userData?.role === 'tutor') {
     return <TutorDashboard />;
   }

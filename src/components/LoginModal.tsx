@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase';
 import { X, User, GraduationCap, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ export function LoginModal({
   message = "Hãy lựa chọn không gian phù hợp với hành trình của bạn."
 }: LoginModalProps) {
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleGoogleLogin = async (role: 'student' | 'tutor') => {
     try {
@@ -28,7 +30,7 @@ export function LoginModal({
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       onClose();
-      window.location.href = '/dashboard';
+      navigate('/dashboard');
     } catch (err: any) {
       console.error("Google login error:", err);
       setError("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
@@ -86,10 +88,10 @@ export function LoginModal({
               <div className="space-y-4 relative z-10">
                 <button 
                   onClick={() => handleGoogleLogin('student')} 
-                  className="w-full h-16 flex items-center justify-between px-6 rounded-2xl border border-primary-200 bg-white hover:bg-primary-50 hover:border-primary-300 text-ink shadow-sm transition-all group"
+                  className="w-full h-16 flex items-center justify-between px-6 rounded-2xl border border-primary-200 bg-[#FDFBF7] hover:bg-primary-50 hover:border-primary-300 text-ink shadow-sm transition-all group"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center group-hover:bg-white transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center group-hover:bg-[#FDFBF7] transition-colors">
                       <User className="w-5 h-5 text-primary-700 stroke-[1.5]" />
                     </div>
                     <span className="font-semibold text-sm tracking-wide">Dành cho Học viên</span>
@@ -101,10 +103,10 @@ export function LoginModal({
                 
                 <button 
                   onClick={() => handleGoogleLogin('tutor')} 
-                  className="w-full h-16 flex items-center justify-between px-6 rounded-2xl border border-primary-200 bg-white hover:bg-primary-50 hover:border-primary-300 text-ink shadow-sm transition-all group"
+                  className="w-full h-16 flex items-center justify-between px-6 rounded-2xl border border-primary-200 bg-[#FDFBF7] hover:bg-primary-50 hover:border-primary-300 text-ink shadow-sm transition-all group"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center group-hover:bg-white transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center group-hover:bg-[#FDFBF7] transition-colors">
                       <GraduationCap className="w-5 h-5 text-primary-700 stroke-[1.5]" />
                     </div>
                     <span className="font-semibold text-sm tracking-wide">Dành cho Người dạy</span>

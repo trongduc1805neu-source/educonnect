@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
 import { Search, MapPin, Calendar, Users, ArrowRight, BookOpen } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const MOCK_CLASSES = [
   {
@@ -54,15 +54,30 @@ const MOCK_CLASSES = [
 
 export function FindClass() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [learningMode, setLearningMode] = useState('');
+  const [availability, setAvailability] = useState('');
+  const navigate = useNavigate();
+
+  const filteredClasses = MOCK_CLASSES.filter(cls => {
+    if (searchTerm && !cls.title.toLowerCase().includes(searchTerm.toLowerCase()) && !cls.subject.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return false;
+    }
+    if (learningMode) {
+      if (learningMode === 'offline' && cls.mode !== 'Trực tiếp') return false;
+      if (learningMode === 'online' && cls.mode !== 'Trực tuyến') return false;
+    }
+    if (availability) {
+      if (availability === 'available' && cls.enrolled >= cls.capacity) return false;
+      if (availability === 'full' && cls.enrolled < cls.capacity) return false;
+    }
+    return true;
+  });
 
   return (
     <div className="max-w-7xl mx-auto px-6 pb-24 mt-8">
       
       {/* Header */}
       <header className="mb-16 max-w-3xl">
-        <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent-500 mb-4">
-          <BookOpen className="w-4 h-4" /> Danh mục khóa học
-        </div>
         <h1 className="text-4xl lg:text-5xl font-heading text-ink mb-6 leading-tight">
           Giảng đường <span className="italic text-primary-700 font-normal">thu nhỏ.</span>
         </h1>
@@ -74,29 +89,35 @@ export function FindClass() {
       <div className="flex flex-col lg:flex-row gap-12">
         
         {/* Sidebar Bộ lọc */}
-        <aside className="w-full lg:w-72 shrink-0">
-          <div className="sticky top-28 space-y-10">
-            <div className="border-b border-primary-200 pb-2">
-              <h4 className="text-[11px] font-bold text-ink/40 uppercase tracking-[0.2em] flex items-center gap-2">
-                <Search className="w-4 h-4" /> Tìm kiếm lớp
+        <aside className="w-full lg:w-80 shrink-0">
+          <div className="sticky top-28 bg-[#FDFBF7] rounded-[32px] p-8 border border-primary-100 shadow-xl shadow-primary-900/5 space-y-8">
+            <div className="border-b border-primary-100 pb-4 mb-2">
+              <h4 className="text-[12px] font-bold text-ink uppercase tracking-[0.2em] flex items-center gap-2">
+                <Search className="w-4 h-4 text-primary-700" /> Tìm kiếm lớp
               </h4>
             </div>
             
-            <div className="space-y-8">
+            <div className="space-y-6">
               <div>
-                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Tên lớp / Môn học</label>
-                <input 
-                  type="text" 
-                  placeholder="Nhập từ khóa..." 
-                  className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 placeholder:text-ink/30 transition-colors"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Tên lớp / Môn học</label>
+                <div className="relative">
+                  <input 
+                    type="text" 
+                    placeholder="Nhập từ khóa..." 
+                    className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 placeholder:text-ink/30 transition-all font-medium"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Không gian học</label>
-                <select className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer">
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Không gian học</label>
+                <select 
+                  className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all"
+                  value={learningMode}
+                  onChange={(e) => setLearningMode(e.target.value)}
+                >
                   <option value="">Tất cả hình thức</option>
                   <option value="offline">Trực tiếp (Tại nhà)</option>
                   <option value="online">Trực tuyến (Online)</option>
@@ -104,30 +125,36 @@ export function FindClass() {
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-1 block">Tình trạng chỗ</label>
-                <select className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer">
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Tình trạng chỗ</label>
+                <select 
+                  className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all"
+                  value={availability}
+                  onChange={(e) => setAvailability(e.target.value)}
+                >
                   <option value="">Tất cả</option>
                   <option value="available">Đang mở đăng ký (Còn chỗ)</option>
                   <option value="full">Đã đủ học viên</option>
                 </select>
               </div>
 
-              <Button className="w-full text-xs tracking-widest shadow-none hover:shadow-md mt-4">
-                LỌC DANH SÁCH
-              </Button>
+              <div className="pt-2">
+                <Button className="w-full h-12 text-xs tracking-widest shadow-md">
+                  ÁP DỤNG BỘ LỌC
+                </Button>
+              </div>
             </div>
           </div>
         </aside>
 
         {/* Danh sách lớp học */}
-        <div className="flex-1 space-y-6">
-          {MOCK_CLASSES.map((cls, idx) => (
+        <div className="flex-1 space-y-12">
+          {filteredClasses.map((cls, idx) => (
             <motion.div 
               key={cls.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.15, duration: 0.6 }}
-              className="group bg-white p-6 sm:p-8 border border-primary-100 rounded-2xl paper-shadow hover:border-primary-300 transition-colors flex flex-col md:flex-row gap-8"
+              className="group flex flex-col md:flex-row gap-8 pb-12 border-b border-primary-100 last:border-0"
             >
               {/* Lịch & Sĩ số (Khối thông tin bên trái) */}
               <div className="w-full md:w-40 shrink-0 flex flex-row md:flex-col justify-between md:justify-start gap-4 border-b md:border-b-0 md:border-r border-primary-100 pb-4 md:pb-0 md:pr-6">
@@ -184,7 +211,7 @@ export function FindClass() {
                     ))}
                   </div>
                   
-                  <Button className="w-full sm:w-auto text-[11px] h-10 px-6 tracking-widest">
+                  <Button onClick={() => navigate('/payment', { state: { type: 'class', data: cls } })} className="w-full sm:w-auto text-[11px] h-10 px-6 tracking-widest">
                     ĐĂNG KÝ HỌC <ArrowRight className="w-3 h-3 ml-2" />
                   </Button>
                 </div>

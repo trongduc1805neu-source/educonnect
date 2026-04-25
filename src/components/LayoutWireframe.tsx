@@ -211,7 +211,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             <div className="flex flex-1 gap-1">
               <div className="w-full h-full border-2 border-gray-800 rounded-sm"></div>
             </div>
-            <div className="absolute top-1 left-1 bottom-1 w-1/3 bg-white border-2 border-gray-800 rounded-sm p-1 flex flex-col gap-1">
+            <div className="absolute top-1 left-1 bottom-1 w-1/3 bg-[#FDFBF7] border-2 border-gray-800 rounded-sm p-1 flex flex-col gap-1">
               <div className="w-full h-1 border-b-2 border-gray-800"></div>
               <div className="w-full h-1 border-b-2 border-gray-800"></div>
               <div className="w-full h-1 border-b-2 border-gray-800"></div>

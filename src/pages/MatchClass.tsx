@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../components/ui/button';
 import { LoginModal } from '../components/LoginModal';
 import { HANOI_WARDS, SUBJECTS, GRADES } from '../constants';
-import { Users, MapPin, Clock, BookOpen, Edit3, ArrowRight } from 'lucide-react';
+import { Users, MapPin, Clock, BookOpen, Edit3, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 // Dữ liệu mẫu được trau chuốt lại với văn phong chia sẻ, đồng hành
 const MOCK_MATCHING_CLASSES = [
@@ -49,6 +49,41 @@ export function MatchClass() {
   const [activeTab, setActiveTab] = useState<'find' | 'create'>('find');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [learningMode, setLearningMode] = useState('Trực tiếp');
+  const [matchItems, setMatchItems] = useState(MOCK_MATCHING_CLASSES);
+  const [joinedIds, setJoinedIds] = useState<number[]>([]);
+
+  // Form states
+  const [subject, setSubject] = useState('');
+  const [grade, setGrade] = useState('');
+  const [currentStudents, setCurrentStudents] = useState<number>(1);
+  const [maxStudents, setMaxStudents] = useState<number>(4);
+  const [area, setArea] = useState('');
+  const [description, setDescription] = useState('');
+
+  const handleCreatePost = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newItem = {
+      id: Date.now(),
+      subject: `${subject} ${grade ? `- ${grade}` : ''}`,
+      currentStudents,
+      maxStudents,
+      location: learningMode === 'Trực tuyến' ? 'Không gian trực tuyến' : area || 'Hà Nội',
+      schedule: 'Đang thảo luận',
+      tuitionPerStudent: 'Thỏa thuận',
+      description: description || 'Chúng mình đang tìm bạn đồng hành cùng mục tiêu học tập...',
+      author: 'Bạn',
+      type: 'Tìm bạn đồng hành'
+    };
+    setMatchItems([newItem, ...matchItems]);
+    setActiveTab('find');
+    // reset form
+    setSubject('');
+    setGrade('');
+    setCurrentStudents(1);
+    setMaxStudents(4);
+    setArea('');
+    setDescription('');
+  };
 
   return (
     <div className="max-w-6xl mx-auto space-y-12 pb-24 px-6 mt-8">
@@ -59,9 +94,6 @@ export function MatchClass() {
       
       {/* Tiêu đề mang tính tự sự */}
       <header className="mb-16 max-w-3xl">
-        <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent-500 mb-4">
-          <Users className="w-4 h-4" /> Bảng tin cộng đồng
-        </div>
         <h1 className="text-4xl lg:text-5xl font-heading text-ink mb-6 leading-tight">
           Hành trình <span className="italic text-primary-700">song hành.</span>
         </h1>
@@ -126,13 +158,13 @@ export function MatchClass() {
 
             {/* Danh sách các "Mẩu tin" (Notices) */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {MOCK_MATCHING_CLASSES.map((item, idx) => (
+              {matchItems.map((item, idx) => (
                 <motion.div 
                   key={item.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1, duration: 0.6 }}
-                  className="bg-white p-8 border border-primary-100 rounded-2xl paper-shadow flex flex-col hover:border-primary-300 transition-colors group relative overflow-hidden"
+                  className="bg-[#FDFBF7] p-8 border border-primary-100 rounded-2xl paper-shadow flex flex-col hover:border-primary-300 transition-colors group relative overflow-hidden"
                 >
                   {/* Nhãn tag tinh tế */}
                   <div className="mb-6">
@@ -176,10 +208,26 @@ export function MatchClass() {
                   </div>
 
                   <button 
-                    onClick={() => setIsLoginModalOpen(true)}
-                    className="mt-8 w-full py-3 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-widest text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors"
+                    onClick={() => {
+                      if (!joinedIds.includes(item.id)) {
+                        setJoinedIds([...joinedIds, item.id]);
+                      }
+                    }}
+                    className={`mt-8 w-full py-3 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-widest rounded-lg transition-colors ${
+                      joinedIds.includes(item.id) 
+                        ? 'bg-emerald-50 text-emerald-600 cursor-default' 
+                        : 'text-primary-700 bg-primary-50 hover:bg-primary-100'
+                    }`}
                   >
-                    Tham gia nhóm <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {joinedIds.includes(item.id) ? (
+                      <>
+                        <CheckCircle2 className="w-4 h-4" /> Đã tham gia nhóm
+                      </>
+                    ) : (
+                      <>
+                        Tham gia nhóm <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
                   </button>
                 </motion.div>
               ))}
@@ -195,7 +243,7 @@ export function MatchClass() {
             className="max-w-3xl"
           >
             {/* Form tạo yêu cầu với phong cách Biểu mẫu điền tay */}
-            <div className="bg-white p-10 lg:p-14 border border-primary-100 rounded-3xl paper-shadow">
+            <div className="bg-[#FDFBF7] p-10 lg:p-14 border border-primary-100 rounded-3xl paper-shadow">
               <div className="flex items-center gap-3 mb-10 pb-6 border-b border-primary-100">
                 <div className="p-3 bg-primary-50 rounded-xl text-primary-700">
                   <Edit3 className="w-6 h-6" />
@@ -206,20 +254,30 @@ export function MatchClass() {
                 </div>
               </div>
               
-              <form className="space-y-10">
+              <form className="space-y-10" onSubmit={handleCreatePost}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                   <div>
                     <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Lĩnh vực học tập</label>
-                    <select className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer">
+                    <select 
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                      required
+                      className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer"
+                    >
                       <option value="">Chọn môn học...</option>
-                      {SUBJECTS.map(subject => <option key={subject} value={subject}>{subject}</option>)}
+                      {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </div>
                   <div>
                     <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Cấp độ / Khối lớp</label>
-                    <select className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer">
+                    <select 
+                      value={grade}
+                      onChange={(e) => setGrade(e.target.value)}
+                      required
+                      className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer"
+                    >
                       <option value="">Chọn trình độ...</option>
-                      {GRADES.map(grade => <option key={grade} value={grade}>{grade}</option>)}
+                      {GRADES.map(g => <option key={g} value={g}>{g}</option>)}
                     </select>
                   </div>
                 </div>
@@ -227,11 +285,11 @@ export function MatchClass() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                   <div>
                     <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Sĩ số hiện tại</label>
-                    <input type="number" min="1" defaultValue="1" className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700" />
+                    <input type="number" min="1" value={currentStudents} onChange={(e) => setCurrentStudents(Number(e.target.value) || 1)} className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700" />
                   </div>
                   <div>
                     <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Quy mô nhóm mong muốn (Tối đa)</label>
-                    <input type="number" min="2" defaultValue="4" className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700" />
+                    <input type="number" min="2" value={maxStudents} onChange={(e) => setMaxStudents(Number(e.target.value) || 2)} className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700" />
                   </div>
                 </div>
 
@@ -250,7 +308,12 @@ export function MatchClass() {
                   {learningMode === 'Trực tiếp' && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                       <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Khu vực dự kiến</label>
-                      <select className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer">
+                      <select 
+                        className="w-full bg-transparent border-0 border-b border-primary-200 py-2 px-0 text-ink focus:ring-0 focus:border-primary-700 appearance-none font-medium cursor-pointer"
+                        value={area}
+                        onChange={(e) => setArea(e.target.value)}
+                        required
+                      >
                         <option value="">Chọn khu vực tại Hà Nội...</option>
                         {HANOI_WARDS.map((ward) => <option key={ward} value={ward}>{ward}</option>)}
                       </select>
@@ -262,6 +325,9 @@ export function MatchClass() {
                   <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-4 block">Câu chuyện của bạn</label>
                   <textarea 
                     rows={4} 
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
                     placeholder="Hãy chia sẻ đôi điều về mục tiêu, kỳ vọng hoặc phong cách học tập của bạn để tìm được những người bạn phù hợp nhất..." 
                     className="w-full bg-primary-50/50 border border-primary-100 rounded-xl p-4 text-ink focus:ring-1 focus:ring-primary-700 focus:border-primary-700 resize-none text-[15px] font-light leading-relaxed placeholder:text-ink/30"
                   ></textarea>
@@ -269,9 +335,8 @@ export function MatchClass() {
 
                 <div className="pt-6">
                   <Button 
-                    type="button" 
+                    type="submit" 
                     className="w-full lg:w-auto h-12 px-10 text-xs tracking-widest shadow-md"
-                    onClick={() => setIsLoginModalOpen(true)}
                   >
                     ĐĂNG LỜI MỜI
                   </Button>
