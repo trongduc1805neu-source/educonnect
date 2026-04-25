@@ -31,7 +31,7 @@ const MOCK_CLASSES = [
   },
   {
     id: 2,
-    title: "Tiếng Anh Giao Tiếp - Xóa mất gốc",
+    title: "Chinh phục Vật Lý 7",
     subject: MOCK_TUTORS[1].subject,
     tutor: `Cô ${MOCK_TUTORS[1].name}`,
     tutorImage: MOCK_TUTORS[1].photoURL,
@@ -42,11 +42,11 @@ const MOCK_CLASSES = [
     enrolled: 8,
     capacity: 10,
     startDate: "20/11/2026",
-    tags: ["Giao tiếp", "Người đi làm"],
+    tags: ["Cơ học", "Điện"],
   },
   {
     id: 3,
-    title: "Luyện thi Chuyên Đại học",
+    title: "Tử vi toán số kinh dịch",
     subject: MOCK_TUTORS[2].subject,
     tutor: `Cô ${MOCK_TUTORS[2].name}`,
     tutorImage: MOCK_TUTORS[2].photoURL,
@@ -57,7 +57,7 @@ const MOCK_CLASSES = [
     enrolled: 2,
     capacity: 4,
     startDate: "01/12/2026",
-    tags: ["Chuyên gia", "Học sinh mới"],
+    tags: ["Kinh dịch", "Cam kết đầu ra có thể nhìn thấy vong"],
   },
   {
     id: 4,
@@ -91,7 +91,7 @@ const MOCK_CLASSES = [
   },
   {
     id: 6,
-    title: "Chinh phục IELTS 7.0+",
+    title: "Luyện thi đại học",
     subject: MOCK_TUTORS[5].subject,
     tutor: `Thầy ${MOCK_TUTORS[5].name}`,
     tutorImage: MOCK_TUTORS[5].photoURL,
@@ -102,7 +102,7 @@ const MOCK_CLASSES = [
     enrolled: 5,
     capacity: 8,
     startDate: "20/12/2026",
-    tags: ["IELTS", "Cam kết đầu ra"],
+    tags: ["Luyện đề, 8+"],
   },
 ];
 
