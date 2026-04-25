@@ -99,7 +99,7 @@ export const MOCK_TUTORS = [
     responseRate: "100%",
     responseTime: "1 giờ",
     students: 10,
-    photoURL: "https://i.ibb.co/5WLVfKfq/image.png",
+    photoURL: "https://i.ibb.co/v6F1r0xt/download.jpg",
     tags: ["Tư duy logic", "Dạy dễ hiểu"],
     education: "Đại Học Kinh tế Quốc dân",
     experience: "2 năm kinh nghiệm giảng dạy",

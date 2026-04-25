@@ -6,11 +6,11 @@ import { HANOI_WARDS, SUBJECTS } from "../constants";
 import { ArrowRight, BookOpen, ShieldCheck, Sparkles } from "lucide-react";
 import { MOCK_TUTORS } from "../data/tutors";
 
-// Lấy 4 gia sư tiêu biểu (thay Diệp Anh Dũng bằng Nguyễn Ngọc Huyền)
+// Lấy 4 gia sư tiêu biểu
 const FEATURED_TUTORS = [
   MOCK_TUTORS[0],
   MOCK_TUTORS[1],
-  MOCK_TUTORS[2],
+  MOCK_TUTORS.find((t) => t.name === "Trần Quỳnh Trang") || MOCK_TUTORS[2],
   MOCK_TUTORS.find((t) => t.name === "Nguyễn Ngọc Huyền") || MOCK_TUTORS[3],
 ].map((tutor) => ({
   id: tutor.id,
