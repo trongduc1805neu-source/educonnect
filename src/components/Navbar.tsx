@@ -13,8 +13,11 @@ export function Navbar() {
     "student",
   );
 
-  const openLoginModal = (role: "student" | "tutor") => {
+  const [initialMode, setInitialMode] = useState<"login" | "register">("login");
+
+  const openLoginModal = (role: "student" | "tutor", mode: "login" | "register" = "login") => {
     setIntendedRole(role);
+    setInitialMode(mode);
     setIsLoginModalOpen(true);
   };
 
@@ -95,20 +98,22 @@ export function Navbar() {
               </div>
             ) : (
               <>
-                <Button
-                  variant="ghost"
-                  onClick={() => openLoginModal("student")}
+                <Button 
+                  className="bg-primary-700 hover:bg-primary-900 text-white"
+                  onClick={() => openLoginModal("student", "login")}
                 >
                   Đăng nhập
                 </Button>
                 <Button
-                  variant="outline"
-                  className="border-zinc-200 text-zinc-600 hover:bg-zinc-50"
-                  onClick={() => openLoginModal("tutor")}
+                  className="bg-primary-700 hover:bg-primary-900 text-white"
+                  onClick={() => openLoginModal("tutor", "login")}
                 >
                   Đăng nhập Gia sư
                 </Button>
-                <Button onClick={() => openLoginModal("student")}>
+                <Button 
+                  className="bg-primary-700 hover:bg-primary-900 text-white"
+                  onClick={() => openLoginModal("student", "register")}
+                >
                   Đăng ký
                 </Button>
               </>
@@ -198,15 +203,14 @@ export function Navbar() {
             ) : (
               <div className="flex flex-col px-6 space-y-3">
                 <Button
-                  variant="outline"
-                  onClick={() => setIsLoginModalOpen(true)}
-                  className="w-full"
+                  onClick={() => { setIsOpen(false); openLoginModal("student", "login"); }}
+                  className="w-full bg-primary-700 hover:bg-primary-900 text-white"
                 >
                   Đăng nhập
                 </Button>
                 <Button
-                  onClick={() => setIsLoginModalOpen(true)}
-                  className="w-full"
+                  onClick={() => { setIsOpen(false); openLoginModal("student", "register"); }}
+                  className="w-full bg-primary-700 hover:bg-primary-900 text-white"
                 >
                   Đăng ký
                 </Button>
@@ -219,6 +223,7 @@ export function Navbar() {
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
+        initialMode={initialMode}
       />
     </nav>
   );

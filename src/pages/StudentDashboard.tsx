@@ -12,8 +12,11 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../contexts/AuthContext";
+
 export function StudentDashboard() {
   const navigate = useNavigate();
+  const { userData } = useAuth();
   const [confirmStep, setConfirmStep] = useState<0 | 1 | 2>(0);
 
   return (
@@ -26,7 +29,7 @@ export function StudentDashboard() {
           </div>
           <h1 className="text-4xl lg:text-5xl font-heading text-ink mb-2">
             Góc học tập{" "}
-            <span className="italic text-primary-700 font-light">của con.</span>
+            <span className="italic text-primary-700 font-light">của {userData?.displayName || 'con'}.</span>
           </h1>
           <p className="text-lg text-ink/60 font-light mt-4 max-w-xl leading-relaxed">
             Theo dõi hành trình trưởng thành, quản lý lịch trình và kết nối sâu

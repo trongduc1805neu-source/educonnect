@@ -2,17 +2,16 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase";
-import { doc, updateDoc } from "firebase/firestore";
 import { Sparkles, BrainCircuit, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "../components/ui/button";
 
 export function Onboarding() {
-  const { user, userData } = useAuth();
+  const { user, userData, loginLocal } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
 
   // Form states
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [grade, setGrade] = useState("");
   const [goals, setGoals] = useState<string[]>([]);
@@ -22,27 +21,44 @@ export function Onboarding() {
   useEffect(() => {
     if (!user) {
       navigate("/");
-    } else if ((userData as any)?.onboardingCompleted) {
+    } else if (userData?.onboardingCompleted) {
       navigate("/dashboard");
     }
   }, [user, userData, navigate]);
 
   const completeOnboarding = async () => {
-    if (!user) return;
+    if (!user || !userData) return;
     try {
-      const userRef = doc(db, "users", user.uid);
-      await updateDoc(userRef, {
+      const updatedUser = {
+        ...userData,
+        displayName: name || userData.displayName,
         onboardingCompleted: true,
         phone,
         grade,
         goals,
         subjects,
-      });
-      // Force reload to update context and go to dashboard
-      window.location.href = "/dashboard";
+      };
+      
+      // Update in users database simulator
+      const usersStr = localStorage.getItem("educonnect_users");
+      if (usersStr) {
+        const users = JSON.parse(usersStr);
+        if (users[userData.email]) {
+          users[userData.email].displayName = name || userData.displayName;
+          users[userData.email].phone = phone;
+          users[userData.email].grade = grade;
+          users[userData.email].goals = goals;
+          users[userData.email].subjects = subjects;
+          users[userData.email].onboardingCompleted = true;
+          localStorage.setItem("educonnect_users", JSON.stringify(users));
+        }
+      }
+      
+      loginLocal(updatedUser);
+      navigate("/dashboard");
     } catch (e) {
       console.error(e);
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
     }
   };
 
@@ -85,6 +101,18 @@ export function Onboarding() {
               </p>
 
               <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold text-ink/70 mb-2">
+                    Họ và tên của bạn
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full rounded-2xl border border-primary-100 p-4 bg-transparent outline-none focus:border-primary-300 focus:ring-1 focus:ring-primary-300 transition-all text-ink"
+                    placeholder="Nhập tên của bạn"
+                  />
+                </div>
                 <div>
                   <label className="block text-sm font-bold text-ink/70 mb-2">
                     Số điện thoại liên hệ
@@ -133,7 +161,7 @@ export function Onboarding() {
               <div className="mt-10 flex justify-end">
                 <Button
                   onClick={handleNext}
-                  disabled={!phone || !grade}
+                  disabled={!name || !phone || !grade}
                   className="rounded-xl px-8 tracking-widest uppercase text-xs font-bold bg-primary-700 hover:bg-primary-800 text-white h-12 flex items-center justify-center"
                 >
                   Tiếp tục <ArrowRight className="w-4 h-4 ml-2" />

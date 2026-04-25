@@ -32,7 +32,10 @@ interface ClassRequest {
   createdAt: string;
 }
 
+import { useAuth } from "../contexts/AuthContext";
+
 export function TutorDashboard() {
+  const { userData } = useAuth();
   const [recentRequests, setRecentRequests] = useState<ClassRequest[]>([]);
   const [loadingRequests, setLoadingRequests] = useState(true);
 
@@ -71,9 +74,9 @@ export function TutorDashboard() {
             <Sparkles className="w-4 h-4" /> Bàn làm việc
           </div>
           <h1 className="text-4xl lg:text-5xl font-heading text-ink mb-2">
-            Hành trình{" "}
+            Hành trình <br className="hidden md:block" />
             <span className="italic text-primary-700 font-light">
-              người dẫn đường.
+              của thầy/cô {userData?.displayName || ''}.
             </span>
           </h1>
           <p className="text-lg text-ink/60 font-light mt-4 leading-relaxed max-w-xl">
