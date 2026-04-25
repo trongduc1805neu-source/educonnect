@@ -1,53 +1,28 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { HANOI_WARDS, SUBJECTS } from '../constants';
 import { ArrowRight, BookOpen, ShieldCheck, Sparkles } from 'lucide-react';
+import { MOCK_TUTORS } from '../data/tutors';
 
-// Dữ liệu mẫu được viết lại với những câu quote truyền cảm hứng
+// Lấy 4 gia sư tiêu biểu (thay Diệp Anh Dũng bằng Nguyễn Ngọc Huyền)
 const FEATURED_TUTORS = [
-  {
-    id: 1,
-    name: 'Nguyễn Hải Anh',
-    subject: 'Toán Học - Khối 9',
-    rating: 4.9,
-    price: '200.000đ',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop',
-    education: 'Đại học Sư phạm Hà Nội',
-    quote: '"Học toán là cách rèn luyện tư duy logic, không phải học thuộc lòng công thức."',
-  },
-  {
-    id: 2,
-    name: 'Trần Phương Ly',
-    subject: 'Ngữ Văn - Khối 12',
-    rating: 5.0,
-    price: '250.000đ',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=600&auto=format&fit=crop',
-    education: 'Đại học KHXH&NV',
-    quote: '"Văn chương giúp các em hiểu rõ chính mình và trân trọng thế giới xung quanh."',
-  },
-  {
-    id: 3,
-    name: 'Lê Hoàng Minh',
-    subject: 'Vật Lý - Khối 10',
-    rating: 4.8,
-    price: '220.000đ',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop',
-    education: 'Đại học Bách khoa Hà Nội',
-    quote: '"Vật lý không nằm trên giấy, nó hiện hữu trong từng chuyển động của cuộc sống."',
-  },
-  {
-    id: 4,
-    name: 'Phạm Tuấn Anh',
-    subject: 'Tiếng Anh - IELTS',
-    rating: 4.9,
-    price: '300.000đ',
-    image: 'https://images.unsplash.com/photo-1544717302-de2939b7ef71?q=80&w=600&auto=format&fit=crop',
-    education: 'Đại học Ngoại Thương',
-    quote: '"Ngôn ngữ mở ra thế giới, điểm số chỉ là trạm dừng chân."',
-  }
-];
+  MOCK_TUTORS[0],
+  MOCK_TUTORS[1],
+  MOCK_TUTORS[2],
+  MOCK_TUTORS.find(t => t.name === 'Nguyễn Ngọc Huyền') || MOCK_TUTORS[3]
+].map(tutor => ({
+  id: tutor.id,
+  name: tutor.name,
+  subject: `${tutor.subject} - ${tutor.grade}`,
+  rating: tutor.rating,
+  price: tutor.fee,
+  image: tutor.photoURL,
+  education: tutor.education,
+  quote: tutor.about ? `"${tutor.about.split('\n')[0]}"` : '"Học tập là rèn luyện tư duy, không phải học thuộc lòng công thức."',
+}));
+
 
 export function Home() {
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -104,6 +79,17 @@ export function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } }
   };
 
+  const [searchSubject, setSearchSubject] = useState('');
+  const [searchLocation, setSearchLocation] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (searchSubject) params.set('subject', searchSubject);
+    if (searchLocation) params.set('area', searchLocation);
+    navigate(`/search?${params.toString()}`);
+  };
+
   return (
     <div className="flex flex-col gap-32 pb-24">
       
@@ -136,21 +122,29 @@ export function Home() {
             <div className="mt-10 bg-[#FDFBF7] p-2 rounded-xl border border-primary-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col sm:flex-row gap-2 max-w-2xl relative z-20">
               <div className="flex-1 px-4 py-3 border-b sm:border-b-0 sm:border-r border-primary-50 text-center">
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-1">Môn học</label>
-                <select className="w-full bg-transparent text-ink outline-none cursor-pointer text-sm font-semibold appearance-none text-center">
+                <select 
+                  className="w-full bg-transparent text-ink outline-none cursor-pointer text-sm font-semibold appearance-none text-center"
+                  value={searchSubject}
+                  onChange={(e) => setSearchSubject(e.target.value)}
+                >
                   <option value="">Chọn môn học</option>
                   {SUBJECTS.map(subject => <option key={subject} value={subject}>{subject}</option>)}
                 </select>
               </div>
               <div className="flex-1 px-4 py-3 border-b sm:border-b-0 sm:border-r border-primary-50 text-center">
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-1">Vị trí</label>
-                <select className="w-full bg-transparent text-ink outline-none cursor-pointer text-sm font-semibold appearance-none text-center">
+                <select 
+                  className="w-full bg-transparent text-ink outline-none cursor-pointer text-sm font-semibold appearance-none text-center"
+                  value={searchLocation}
+                  onChange={(e) => setSearchLocation(e.target.value)}
+                >
                   <option value="">Khu vực học</option>
                   <optgroup label="Hà Nội">
                     {HANOI_WARDS.map((ward) => <option key={ward} value={ward}>{ward}</option>)}
                   </optgroup>
                 </select>
               </div>
-              <Button size="lg" className="w-full sm:w-auto shrink-0 self-center mx-auto text-center bg-primary-700 text-white rounded-lg px-10">
+              <Button onClick={handleSearch} size="lg" className="w-full sm:w-auto shrink-0 self-center mx-auto text-center bg-primary-700 text-white rounded-lg px-10">
                 TÌM KIẾM
               </Button>
             </div>
@@ -165,7 +159,7 @@ export function Home() {
           >
             <div className="aspect-[4/5] rounded-2xl overflow-hidden relative bg-primary-50">
               <img 
-                src="https://i.ibb.co/GfVkb056/GV-Yeu-TV-3407-1632217612.jpg" 
+                src="https://i.ibb.co/PG8tsfJz/image.png" 
                 alt="GV-Yeu-TV-3407-1632217612" 
                 className="object-cover w-full h-full hover:scale-105 transition-transform duration-1000"
               />
@@ -318,7 +312,7 @@ export function Home() {
               {/* Hình ảnh triết lý - Sắc thái tối, trầm mặc */}
               <div className="aspect-[4/5] bg-primary-800 rounded-2xl border border-paper/10 overflow-hidden relative shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop" 
+                  src="https://i.ibb.co/hxPXCzGf/672358702-5406759889548251-804390910120448289-n.jpg" 
                   alt="Không gian học tập"
                   className="w-full h-full object-cover opacity-70 mix-blend-luminosity hover:mix-blend-normal hover:opacity-100 transition-all duration-1000"
                 />

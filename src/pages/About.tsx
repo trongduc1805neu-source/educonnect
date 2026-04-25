@@ -1,14 +1,23 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Target, Eye, Rocket, Users, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { MOCK_TUTORS } from '../data/tutors';
 
-const TEAM = [
+const INITIAL_TEAM = [
   { id: 1, name: 'Nguyễn Trọng Đức', role: 'Giám đốc Tài chính', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600&auto=format&fit=crop' },
   { id: 2, name: 'Lê Nguyễn Thu Uyên', role: 'Giám đốc Sản phẩm', image: 'https://i.ibb.co/SF32x32/649080250-1480301896998131-8534730828073620253-n.jpg' },
   { id: 3, name: 'Nguyễn Ngọc Huyền', role: 'Giám đốc Điều hành', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=600&auto=format&fit=crop' },
-  { id: 4, name: 'Phan Thúy An', role: 'Giám đốc Marketing', image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=600&auto=format&fit=crop' },
+  { id: 4, name: 'Phan Thúy An', role: 'Giám đốc Marketing', image: 'https://i.ibb.co/TqhHK8Lw/image.png' },
   { id: 5, name: 'Nguyễn Ngân Hà', role: 'Giám đốc Pháp lý', image: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?q=80&w=600&auto=format&fit=crop' },
 ];
+
+const TEAM = INITIAL_TEAM.map(member => {
+  const findTutor = MOCK_TUTORS.find(t => t.name === member.name);
+  return {
+    ...member,
+    image: findTutor?.photoURL || member.image,
+  };
+});
 
 export function About() {
   const [activeIndex, setActiveIndex] = useState(2);
@@ -38,7 +47,7 @@ export function About() {
         <div className="relative hidden lg:block lg:mt-6 z-0">
           <div className="aspect-[3/4] rounded-3xl overflow-hidden paper-shadow">
             <img 
-              src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop" 
+              src="https://i.ibb.co/9kQFLCjS/thiet-ke-van-phong-giao-duc.jpg" 
               alt="Office workspace" 
               className="w-full h-full object-cover"
             />

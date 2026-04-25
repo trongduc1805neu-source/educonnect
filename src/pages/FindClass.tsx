@@ -3,18 +3,20 @@ import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
 import { Search, MapPin, Calendar, Users, ArrowRight, BookOpen } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { MOCK_TUTORS } from '../data/tutors';
+import { SUBJECTS, HANOI_WARDS } from '../constants';
 
 const MOCK_CLASSES = [
   {
     id: 1,
     title: 'Luyện đề Toán 12 - Trọng điểm hình học',
-    subject: 'Toán Học',
-    tutor: 'Thầy Nguyễn Hải Anh',
-    tutorImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop',
+    subject: MOCK_TUTORS[0].subject,
+    tutor: `Cô ${MOCK_TUTORS[0].name}`,
+    tutorImage: MOCK_TUTORS[0].photoURL,
     schedule: 'Tối Thứ 3 & Thứ 6 (19:30 - 21:00)',
-    location: 'Quận Đống Đa, Hà Nội',
-    mode: 'Trực tiếp',
-    price: '150.000đ',
+    location: MOCK_TUTORS[0].location,
+    mode: MOCK_TUTORS[0].mode,
+    price: MOCK_TUTORS[0].fee,
     enrolled: 3,
     capacity: 5,
     startDate: '15/11/2026',
@@ -22,53 +24,125 @@ const MOCK_CLASSES = [
   },
   {
     id: 2,
-    title: 'Phân tích định lượng SPSS cơ bản',
-    subject: 'Nghiên cứu khoa học',
-    tutor: 'Nghiên cứu viên Khánh Lê',
-    tutorImage: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop',
+    title: 'Tiếng Anh Giao Tiếp - Xóa mất gốc',
+    subject: MOCK_TUTORS[1].subject,
+    tutor: `Cô ${MOCK_TUTORS[1].name}`,
+    tutorImage: MOCK_TUTORS[1].photoURL,
     schedule: 'Sáng Chủ Nhật (08:30 - 11:30)',
-    location: 'Google Meet',
-    mode: 'Trực tuyến',
-    price: '200.000đ',
+    location: MOCK_TUTORS[1].location,
+    mode: MOCK_TUTORS[1].mode,
+    price: MOCK_TUTORS[1].fee,
     enrolled: 8,
     capacity: 10,
     startDate: '20/11/2026',
-    tags: ['SPSS', 'Sinh viên đại học']
+    tags: ['Giao tiếp', 'Người đi làm']
   },
   {
     id: 3,
-    title: 'Ngữ Văn Khối 10 - Cảm thụ văn học',
-    subject: 'Ngữ Văn',
-    tutor: 'Cô Trần Phương Ly',
-    tutorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+    title: 'Luyện thi Chuyên Đại học',
+    subject: MOCK_TUTORS[2].subject,
+    tutor: `Cô ${MOCK_TUTORS[2].name}`,
+    tutorImage: MOCK_TUTORS[2].photoURL,
     schedule: 'Tối Thứ 4 (18:00 - 20:00)',
-    location: 'Quận Cầu Giấy, Hà Nội',
-    mode: 'Trực tiếp',
-    price: '180.000đ',
+    location: MOCK_TUTORS[2].location,
+    mode: MOCK_TUTORS[2].mode,
+    price: MOCK_TUTORS[2].fee,
     enrolled: 2,
     capacity: 4,
     startDate: '01/12/2026',
-    tags: ['Xây gốc', 'Học sinh mới']
+    tags: ['Chuyên gia', 'Học sinh mới']
+  },
+  {
+    id: 4,
+    title: 'Lấy lại gốc Vật Lý 11',
+    subject: MOCK_TUTORS[3].subject,
+    tutor: `Thầy ${MOCK_TUTORS[3].name}`,
+    tutorImage: MOCK_TUTORS[3].photoURL,
+    schedule: 'Chiều Thứ 7 & Sáng CN',
+    location: MOCK_TUTORS[3].location,
+    mode: MOCK_TUTORS[3].mode,
+    price: MOCK_TUTORS[3].fee,
+    enrolled: 4,
+    capacity: 6,
+    startDate: '10/12/2026',
+    tags: ['Cơ bản', 'Tận tâm']
+  },
+  {
+    id: 5,
+    title: 'Hóa Học Vui Mỗi Ngày',
+    subject: MOCK_TUTORS[4].subject,
+    tutor: `Thầy ${MOCK_TUTORS[4].name}`,
+    tutorImage: MOCK_TUTORS[4].photoURL,
+    schedule: 'Tối Thứ 2 & Thứ 5 (19:00 - 21:00)',
+    location: MOCK_TUTORS[4].location,
+    mode: MOCK_TUTORS[4].mode,
+    price: MOCK_TUTORS[4].fee,
+    enrolled: 1,
+    capacity: 5,
+    startDate: '05/12/2026',
+    tags: ['Thực hành', 'Ứng dụng']
+  },
+  {
+    id: 6,
+    title: 'Chinh phục IELTS 7.0+',
+    subject: MOCK_TUTORS[5].subject,
+    tutor: `Thầy ${MOCK_TUTORS[5].name}`,
+    tutorImage: MOCK_TUTORS[5].photoURL,
+    schedule: 'Sáng Thứ 3 & Thứ 5 (08:00 - 10:00)',
+    location: MOCK_TUTORS[5].location,
+    mode: MOCK_TUTORS[5].mode,
+    price: MOCK_TUTORS[5].fee,
+    enrolled: 5,
+    capacity: 8,
+    startDate: '20/12/2026',
+    tags: ['IELTS', 'Cam kết đầu ra']
   }
 ];
 
 export function FindClass() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [subject, setSubject] = useState('');
+  const [location, setLocation] = useState('');
   const [learningMode, setLearningMode] = useState('');
   const [availability, setAvailability] = useState('');
+
+  const [appliedFilters, setAppliedFilters] = useState({
+    searchTerm: '',
+    subject: '',
+    location: '',
+    learningMode: '',
+    availability: ''
+  });
+
   const navigate = useNavigate();
 
+  const handleApplyFilters = () => {
+    setAppliedFilters({
+      searchTerm,
+      subject,
+      location,
+      learningMode,
+      availability
+    });
+  };
+
   const filteredClasses = MOCK_CLASSES.filter(cls => {
-    if (searchTerm && !cls.title.toLowerCase().includes(searchTerm.toLowerCase()) && !cls.subject.toLowerCase().includes(searchTerm.toLowerCase())) {
+    if (appliedFilters.searchTerm && !cls.title.toLowerCase().includes(appliedFilters.searchTerm.toLowerCase()) && !cls.subject.toLowerCase().includes(appliedFilters.searchTerm.toLowerCase())) {
       return false;
     }
-    if (learningMode) {
-      if (learningMode === 'offline' && cls.mode !== 'Trực tiếp') return false;
-      if (learningMode === 'online' && cls.mode !== 'Trực tuyến') return false;
+    if (appliedFilters.subject && cls.subject !== appliedFilters.subject) {
+      return false;
     }
-    if (availability) {
-      if (availability === 'available' && cls.enrolled >= cls.capacity) return false;
-      if (availability === 'full' && cls.enrolled < cls.capacity) return false;
+    if (appliedFilters.location && cls.location !== appliedFilters.location) {
+      return false;
+    }
+    if (appliedFilters.learningMode) {
+      if (appliedFilters.learningMode === 'offline' && cls.mode === 'Online') return false;
+      if (appliedFilters.learningMode === 'online' && cls.mode === 'Tại nhà') return false;
+    }
+    if (appliedFilters.availability) {
+      if (appliedFilters.availability === 'available' && cls.enrolled >= cls.capacity) return false;
+      if (appliedFilters.availability === 'full' && cls.enrolled < cls.capacity) return false;
     }
     return true;
   });
@@ -112,6 +186,18 @@ export function FindClass() {
               </div>
 
               <div>
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Môn học</label>
+                <select 
+                  className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                >
+                  <option value="">Tất cả chuyên ngành</option>
+                  {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+
+              <div>
                 <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Không gian học</label>
                 <select 
                   className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all"
@@ -123,6 +209,20 @@ export function FindClass() {
                   <option value="online">Trực tuyến (Online)</option>
                 </select>
               </div>
+
+              {learningMode !== 'online' && (
+                <div>
+                  <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Khu vực (Hà Nội)</label>
+                  <select 
+                    className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                  >
+                    <option value="">Toàn thành phố</option>
+                    {HANOI_WARDS.map((ward) => <option key={ward} value={ward}>{ward}</option>)}
+                  </select>
+                </div>
+              )}
 
               <div>
                 <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Tình trạng chỗ</label>
@@ -138,7 +238,7 @@ export function FindClass() {
               </div>
 
               <div className="pt-2">
-                <Button className="w-full h-12 text-xs tracking-widest shadow-md">
+                <Button onClick={handleApplyFilters} className="w-full h-12 text-xs tracking-widest shadow-md">
                   ÁP DỤNG BỘ LỌC
                 </Button>
               </div>

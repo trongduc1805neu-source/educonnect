@@ -1,27 +1,61 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { LoginModal } from '../components/LoginModal';
-import { HANOI_WARDS, SUBJECTS } from '../constants';
+import { HANOI_WARDS, SUBJECTS, GRADES } from '../constants';
 import { Search as SearchIcon, MapPin, Award, BookOpen, Star } from 'lucide-react';
 
 // Dữ liệu mẫu mang hơi thở học thuật và bám sát thực tế sinh viên/giáo viên
 import { MOCK_TUTORS } from '../data/tutors';
 
 export function Search() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  // local filter states for the form (draft state)
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [learningMode, setLearningMode] = useState('Tất cả hình thức');
+  const [learningMode, setLearningMode] = useState(searchParams.get('mode') || 'Tất cả hình thức');
+  const [subject, setSubject] = useState(searchParams.get('subject') || '');
+  const [area, setArea] = useState(searchParams.get('area') || '');
+  const [grade, setGrade] = useState(searchParams.get('grade') || '');
   const navigate = useNavigate();
+
+  // applied filters from URL
+  const appliedSearchTerm = searchParams.get('q') || '';
+  const appliedLearningMode = searchParams.get('mode') || 'Tất cả hình thức';
+  const appliedSubject = searchParams.get('subject') || '';
+  const appliedArea = searchParams.get('area') || '';
+  const appliedGrade = searchParams.get('grade') || '';
+
+  // sync draft state with URL if URL changes (e.g. back button or from home)
+  useEffect(() => {
+    setSearchTerm(searchParams.get('q') || '');
+    setLearningMode(searchParams.get('mode') || 'Tất cả hình thức');
+    setSubject(searchParams.get('subject') || '');
+    setArea(searchParams.get('area') || '');
+    setGrade(searchParams.get('grade') || '');
+  }, [searchParams]);
 
   const filteredTutors = MOCK_TUTORS.filter(tutor => {
     // keyword
-    if (searchTerm && !tutor.name.toLowerCase().includes(searchTerm.toLowerCase()) && !tutor.subject.toLowerCase().includes(searchTerm.toLowerCase())) {
+    if (appliedSearchTerm && !tutor.name.toLowerCase().includes(appliedSearchTerm.toLowerCase()) && !tutor.subject.toLowerCase().includes(appliedSearchTerm.toLowerCase())) {
       return false;
     }
     // learning mode
-    if (learningMode !== 'Tất cả hình thức' && !tutor.mode.toLowerCase().includes(learningMode.toLowerCase())) {
+    if (appliedLearningMode !== 'Tất cả hình thức' && !tutor.mode.toLowerCase().includes(appliedLearningMode.toLowerCase())) {
+      return false;
+    }
+    // subject
+    if (appliedSubject && tutor.subject !== appliedSubject) {
+      return false;
+    }
+    // area
+    if (appliedArea && !tutor.location.toLowerCase().includes(appliedArea.toLowerCase())) {
+      return false;
+    }
+    // grade
+    if (appliedGrade && tutor.grade !== appliedGrade) {
       return false;
     }
     return true;
@@ -70,10 +104,26 @@ export function Search() {
               </div>
 
               <div>
+                <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Lớp học</label>
+                <select 
+                  className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all"
+                  value={grade}
+                  onChange={(e) => setGrade(e.target.value)}
+                >
+                  <option value="">Tất cả các lớp</option>
+                  {GRADES.map(g => <option key={g} value={g}>{g}</option>)}
+                </select>
+              </div>
+
+              <div>
                 <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Môn học</label>
-                <select className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all">
+                <select 
+                  className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                >
                   <option value="">Tất cả lĩnh vực</option>
-                  {SUBJECTS.map(subject => <option key={subject} value={subject}>{subject}</option>)}
+                  {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
 
@@ -85,15 +135,19 @@ export function Search() {
                   onChange={(e) => setLearningMode(e.target.value)}
                 >
                   <option value="Tất cả hình thức">Linh hoạt</option>
-                  <option value="Trực tiếp">Trực tiếp (Tại nhà)</option>
-                  <option value="Trực tuyến">Trực tuyến (Online)</option>
+                  <option value="Tại nhà">Trực tiếp (Tại nhà)</option>
+                  <option value="Online">Trực tuyến (Online)</option>
                 </select>
               </div>
 
-              {learningMode !== 'Trực tuyến' && (
+              {learningMode !== 'Online' && (
                 <div>
                   <label className="text-[10px] font-bold text-ink/50 uppercase tracking-widest mb-2 block">Khu vực (Hà Nội)</label>
-                  <select className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all">
+                  <select 
+                    className="w-full bg-primary-50/50 border border-primary-100 rounded-xl py-3 px-4 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-700/20 focus:border-primary-700 appearance-none font-medium cursor-pointer transition-all"
+                    value={area}
+                    onChange={(e) => setArea(e.target.value)}
+                  >
                     <option value="">Khắp thành phố</option>
                     {HANOI_WARDS.map((ward) => <option key={ward} value={ward}>{ward}</option>)}
                   </select>
@@ -101,7 +155,18 @@ export function Search() {
               )}
 
               <div className="pt-2">
-                <Button className="w-full h-12 text-xs tracking-widest shadow-md">
+                <Button 
+                  className="w-full h-12 text-xs tracking-widest shadow-md"
+                  onClick={() => {
+                    const newParams = new URLSearchParams();
+                    if (searchTerm) newParams.set('q', searchTerm);
+                    if (learningMode !== 'Tất cả hình thức') newParams.set('mode', learningMode);
+                    if (subject) newParams.set('subject', subject);
+                    if (area && learningMode !== 'Online') newParams.set('area', area);
+                    if (grade) newParams.set('grade', grade);
+                    setSearchParams(newParams);
+                  }}
+                >
                   ÁP DỤNG BỘ LỌC
                 </Button>
               </div>
