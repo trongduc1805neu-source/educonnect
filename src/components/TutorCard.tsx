@@ -35,7 +35,7 @@ export function TutorCard({
           alt={name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        
+
         {/* Heart Icon */}
         <button className="absolute right-3 top-3 z-10 rounded-full p-2 text-white hover:bg-[#FDFBF7]/20 transition-colors">
           <Heart className="h-6 w-6" />

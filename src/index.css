@@ -1,14 +1,13 @@
-/* EduConnect - Editorial Design System
-  Style: Warm, High-end Educational Magazine
+/* EduConnect - Modern System Design
+  Style: Clean, Native, Apple-like
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300..700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Typography: Serif cho tiêu đề tạo cảm giác tri thức, Sans cho nội dung dễ đọc */
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Lora", ui-serif, Georgia, serif;
+  /* Typography: System fonts for native feel across all devices (SF Pro for Apple, Segoe UI for Windows, Roboto for Android) */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-heading: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
   
   /* Bảng màu "Giấy & Mực" (Earth & Ink Palette) */
   --color-paper: #FDFBF7;        /* Màu giấy ngà cao cấp, giảm mỏi mắt */

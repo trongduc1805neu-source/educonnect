@@ -1,7 +1,7 @@
-import { useAuth } from '../contexts/AuthContext';
-import { StudentDashboard } from './StudentDashboard';
-import { TutorDashboard } from './TutorDashboard';
-import { Navigate } from 'react-router-dom';
+import { useAuth } from "../contexts/AuthContext";
+import { StudentDashboard } from "./StudentDashboard";
+import { TutorDashboard } from "./TutorDashboard";
+import { Navigate } from "react-router-dom";
 
 export function Dashboard() {
   const { user, userData, loading } = useAuth();
@@ -22,7 +22,7 @@ export function Dashboard() {
     return <Navigate to="/onboarding" replace />;
   }
 
-  if (userData?.role === 'tutor') {
+  if (userData?.role === "tutor") {
     return <TutorDashboard />;
   }
 

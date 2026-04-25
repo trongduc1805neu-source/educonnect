@@ -1,14 +1,17 @@
-import React from 'react';
+import React from "react";
 
 interface LayoutWireframeProps {
   type: string;
   name: string;
 }
 
-export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) => {
+export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({
+  type,
+  name,
+}) => {
   const renderWireframe = () => {
     switch (type) {
-      case 'two-column':
+      case "two-column":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -23,7 +26,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'split-screen':
+      case "split-screen":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -38,7 +41,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'asymmetrical':
+      case "asymmetrical":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -59,7 +62,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'f-shape':
+      case "f-shape":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -78,7 +81,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'z-shape':
+      case "z-shape":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1 relative overflow-hidden">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -89,12 +92,23 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
             <div className="w-full h-4 border-2 border-gray-800 rounded-sm"></div>
             <div className="w-full h-4 border-2 border-gray-800 rounded-sm mt-auto"></div>
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 10 }}>
-              <path d="M 10 20 L 90 20 L 10 80 L 90 80" fill="none" stroke="#fef08a" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity="0.8" />
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              style={{ zIndex: 10 }}
+            >
+              <path
+                d="M 10 20 L 90 20 L 10 80 L 90 80"
+                fill="none"
+                stroke="#fef08a"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity="0.8"
+              />
             </svg>
           </div>
         );
-      case 'card':
+      case "card":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -119,7 +133,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'featured':
+      case "featured":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -138,7 +152,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'masonry':
+      case "masonry":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -163,7 +177,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'magazine':
+      case "magazine":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -183,7 +197,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'fixed-nav':
+      case "fixed-nav":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1 bg-yellow-100">
@@ -197,7 +211,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'hidden-nav':
+      case "hidden-nav":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1 relative">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -218,7 +232,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
             </div>
           </div>
         );
-      case 'interactive':
+      case "interactive":
         return (
           <div className="w-full h-24 border-2 border-gray-800 rounded flex flex-col p-1 gap-1">
             <div className="w-full h-3 border-2 border-gray-800 rounded-sm flex items-center px-1">
@@ -241,9 +255,7 @@ export const LayoutWireframe: React.FC<LayoutWireframeProps> = ({ type, name }) 
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <div className="w-32">
-        {renderWireframe()}
-      </div>
+      <div className="w-32">{renderWireframe()}</div>
       <span className="text-sm font-medium text-center">{name}</span>
     </div>
   );

@@ -1,12 +1,4 @@
-export const SUBJECTS = [
-  "Toán",
-  "Lý",
-  "Hóa",
-  "Văn",
-  "Sử",
-  "Địa",
-  "Tiếng Anh"
-];
+export const SUBJECTS = ["Toán", "Lý", "Hóa", "Văn", "Sử", "Địa", "Tiếng Anh"];
 
 export const GRADES = [
   "Lớp 1",
@@ -20,7 +12,7 @@ export const GRADES = [
   "Lớp 9",
   "Lớp 10",
   "Lớp 11",
-  "Lớp 12"
+  "Lớp 12",
 ];
 
 export const HANOI_WARDS = [
@@ -149,5 +141,5 @@ export const HANOI_WARDS = [
   "Xã Đa Phúc",
   "Xã Nội Bài",
   "Xã Trung Giã",
-  "Xã Kim Anh"
+  "Xã Kim Anh",
 ];
